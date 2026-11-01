@@ -425,7 +425,7 @@
   color: var(--brand-2);
   font-size: 13px;
   font-weight: 600;
-  animation: fade-up 0.25s var(--ease);
+  animation: fade-up var(--dur-2) var(--ease);
   transition: transform var(--dur-1) var(--ease);
 }
 
@@ -752,3 +752,74 @@
   font-size: 14px;
   font-weight: 500;
 }
+
+/* ==========================================================================
+   Movimiento en registro e inicio de sesión
+   ========================================================================== */
+
+/* Los mensajes de error aparecen deslizándose, y el campo con error se sacude un poco */
+.field-error:not(:empty) { animation: field-msg-in var(--dur-2) var(--ease); }
+.form-alert,
+.form-notice { animation: field-msg-in var(--dur-3) var(--ease); }
+
+@keyframes field-msg-in {
+  from { opacity: 0; transform: translateY(-4px); }
+}
+
+.input.is-invalid { animation: field-shake 320ms var(--ease-in-out); }
+
+@keyframes field-shake {
+  20% { translate: -4px 0; }
+  40% { translate: 4px 0; }
+  60% { translate: -3px 0; }
+  80% { translate: 2px 0; }
+}
+
+/* Pistas bajo los campos: el color cambia con suavidad (disponible, ocupado…) */
+.field-hint { transition: color var(--dur-2) var(--ease); }
+
+/* Indicador de usuario disponible: entra con un pequeño rebote */
+.username-status {
+  transition: background-color var(--dur-2) var(--ease), transform var(--dur-3) var(--ease-spring), opacity var(--dur-2) var(--ease);
+}
+
+.username-status:empty { opacity: 0; transform: scale(0.5); }
+.username-status .icon { animation: status-pop var(--dur-3) var(--ease-spring); }
+
+@keyframes status-pop {
+  from { opacity: 0; transform: scale(0.4) rotate(-20deg); }
+}
+
+/* Seguridad de la contraseña: cada segmento se ilumina con un leve pulso */
+.strength i { transition: background-color var(--dur-3) var(--ease), transform var(--dur-3) var(--ease-spring); }
+.strength[data-level="1"] i:nth-child(-n + 1),
+.strength[data-level="2"] i:nth-child(-n + 2),
+.strength[data-level="3"] i { transform: scaleY(1.25); }
+
+/* Mostrar / ocultar contraseña: el ojo gira al cambiar */
+.toggle-password.is-swapping .icon { animation: eye-swap var(--dur-2) var(--ease); }
+
+@keyframes eye-swap {
+  from { opacity: 0; transform: rotate(-30deg) scale(0.7); }
+}
+
+/* Enviando el formulario (auth-ui.js): el botón muestra que está trabajando */
+.btn.is-pending {
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.btn.is-pending::before {
+  content: "";
+  width: 16px;
+  height: 16px;
+  border: 2px solid color-mix(in srgb, currentColor 35%, transparent);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+/* Enlaces de las pantallas de acceso */
+.auth-foot a { transition: color var(--dur-1) var(--ease); }
+.auth-switch { transition: background-color var(--dur-2) var(--ease), transform var(--dur-2) var(--ease-spring); }
+.auth-switch:active { transform: scale(0.96); }

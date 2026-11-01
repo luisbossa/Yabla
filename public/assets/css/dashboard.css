@@ -239,7 +239,7 @@ body {
 
 .panel.is-active {
   display: block;
-  animation: fade-up 0.3s var(--ease);
+  animation: fade-up var(--dur-3) var(--ease);
 }
 
 .list-title {
@@ -536,6 +536,66 @@ body {
   color: var(--surface);
 }
 
+/* Filtros de la lista con indicador deslizante (sidebar.js): la píldora oscura viaja de un filtro
+   a otro por debajo del texto. El fondo gris de cada chip va en ::before para que el indicador
+   pase por encima de él pero por debajo de las letras. */
+.chips.has-indicator {
+  position: relative;
+  isolation: isolate;
+}
+
+.chips.has-indicator .chip {
+  position: relative;
+  background: transparent;
+  transition: color var(--dur-3) var(--ease);
+}
+
+.chips.has-indicator .chip::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  border-radius: inherit;
+  background: var(--surface-2);
+  transition: background-color var(--dur-2) var(--ease), transform var(--dur-2) var(--ease-spring);
+}
+
+.chips.has-indicator .chip:hover::before { background: var(--surface-3); }
+.chips.has-indicator .chip:active::before { transform: scale(0.94); }
+.chips.has-indicator .chip.is-active { background: transparent; color: var(--surface); }
+
+.chips-indicator {
+  position: absolute;
+  top: 2px;
+  left: 0;
+  z-index: -1;
+  height: 32px;
+  border-radius: var(--pill);
+  background: var(--ink);
+  box-shadow: 0 4px 12px -4px color-mix(in srgb, var(--ink) 45%, transparent);
+  pointer-events: none;
+  transition: transform var(--dur-3) var(--ease), width var(--dur-3) var(--ease);
+}
+
+/* Al abrir un chat, sus mensajes aparecen con un fundido suave */
+.messages.is-entering > * {
+  animation: chat-in var(--dur-3) var(--ease) both;
+}
+
+@keyframes chat-in {
+  from { opacity: 0; transform: translateY(6px); }
+}
+
+/* Al cambiar de filtro o abrir "Archivados", los chats entran escalonados */
+.conv-list.is-entering > li {
+  animation: list-in var(--dur-3) var(--ease) both;
+  animation-delay: calc(var(--i, 0) * 22ms);
+}
+
+@keyframes list-in {
+  from { opacity: 0; transform: translateY(8px); }
+}
+
 .chip b {
   display: inline-grid;
   place-items: center;
@@ -779,7 +839,7 @@ body {
   border-bottom: 1px solid var(--border);
   background: var(--surface-2);
   color: var(--muted);
-  animation: fade-up 0.25s var(--ease);
+  animation: fade-up var(--dur-2) var(--ease);
 }
 
 .chat-search input {
@@ -832,7 +892,7 @@ body {
 
 .is-new,
 .typing-msg {
-  animation: msg-in 0.3s var(--ease);
+  animation: msg-in var(--dur-3) var(--ease);
 }
 
 .msg.me {
@@ -1163,7 +1223,7 @@ body {
   background: var(--surface);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-lg);
-  animation: fade-up 0.2s var(--ease);
+  animation: fade-up var(--dur-2) var(--ease);
 }
 
 /* Selector de emojis (emoji-picker.js): buscador, pestañas y secciones */
@@ -1541,7 +1601,7 @@ body {
   display: grid;
   place-items: center;
   background: #0b0b0c;
-  animation: fade-up 0.25s var(--ease);
+  animation: fade-up var(--dur-2) var(--ease);
 }
 
 .story-media {
@@ -2703,7 +2763,7 @@ body {
   color: var(--ink);
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
-  animation: fade-up 0.2s var(--ease);
+  animation: fade-up var(--dur-2) var(--ease);
 }
 
 .scroll-down .badge {
@@ -2739,7 +2799,7 @@ body {
   border-radius: var(--radius);
   background: var(--surface-2);
   border-left: 3px solid var(--brand);
-  animation: fade-up 0.2s var(--ease);
+  animation: fade-up var(--dur-2) var(--ease);
 }
 
 .compose-context-icon {
@@ -2782,7 +2842,7 @@ body {
   padding: 4px 4px 4px 6px;
   border-radius: 26px;
   background: var(--surface-2);
-  animation: fade-up 0.2s var(--ease);
+  animation: fade-up var(--dur-2) var(--ease);
 }
 
 .rec-dot {
@@ -2822,7 +2882,7 @@ body {
   background: var(--surface);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-lg);
-  animation: fade-up 0.15s var(--ease);
+  animation: fade-up var(--dur-1) var(--ease);
 }
 
 .msg-menu-reactions {
@@ -2970,7 +3030,7 @@ button.user-row:hover { background: var(--surface-2); }
   color: #fff;
   text-align: center;
   box-shadow: var(--shadow-lg);
-  animation: fade-up 0.3s var(--ease);
+  animation: fade-up var(--dur-3) var(--ease);
 }
 
 .incoming-avatar {
@@ -3656,7 +3716,7 @@ select.input {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  animation: fade-up 0.25s var(--ease);
+  animation: fade-up var(--dur-2) var(--ease);
 }
 
 .attach-stage iframe {
@@ -3672,7 +3732,7 @@ select.input {
   gap: 6px;
   max-width: 80%;
   text-align: center;
-  animation: fade-up 0.25s var(--ease);
+  animation: fade-up var(--dur-2) var(--ease);
 }
 
 .attach-file-icon {
@@ -4091,7 +4151,7 @@ select.input {
   color: var(--brand-2);
   font-size: 12px;
   font-weight: 700;
-  animation: fade-up 0.3s var(--ease);
+  animation: fade-up var(--dur-3) var(--ease);
 }
 
 .unread-divider::before,
@@ -4137,7 +4197,7 @@ select.input {
   border-radius: 12px;
   background: rgba(0, 0, 0, 0.06);
   border-left: 3px solid var(--brand);
-  animation: fade-up 0.25s var(--ease);
+  animation: fade-up var(--dur-2) var(--ease);
 }
 
 .msg.me .link-preview.is-ready {
@@ -4443,7 +4503,7 @@ kbd {
   color: var(--brand-2);
   font-size: 12.5px;
   font-weight: 600;
-  animation: fade-up 0.2s var(--ease);
+  animation: fade-up var(--dur-2) var(--ease);
 }
 
 .pick-chip img {
@@ -5123,7 +5183,7 @@ kbd {
   background: var(--surface);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-lg);
-  animation: pop-in 0.18s var(--ease);
+  animation: pop-in var(--dur-2) var(--ease);
 }
 
 .react-tray button {
@@ -5171,7 +5231,7 @@ kbd {
   border-bottom: 1px solid var(--border);
   background: var(--brand-soft);
   color: var(--ink);
-  animation: fade-up 0.2s var(--ease);
+  animation: fade-up var(--dur-2) var(--ease);
 }
 
 .select-bar strong { flex: 1; }
@@ -5227,7 +5287,7 @@ kbd {
   padding: 6px 10px 6px 16px;
   border-bottom: 1px solid var(--border);
   background: color-mix(in srgb, var(--surface) 92%, var(--brand-soft));
-  animation: fade-up 0.2s var(--ease);
+  animation: fade-up var(--dur-2) var(--ease);
 }
 
 .pinned-marks {
@@ -5313,7 +5373,7 @@ kbd {
   background: var(--surface);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-lg);
-  animation: fade-up 0.15s var(--ease);
+  animation: fade-up var(--dur-1) var(--ease);
 }
 
 .mention-option {
@@ -5512,7 +5572,7 @@ kbd {
   color: var(--brand-2);
   font-size: 12.5px;
   font-weight: 600;
-  animation: fade-up 0.2s var(--ease);
+  animation: fade-up var(--dur-2) var(--ease);
 }
 
 .scheduled-chip:hover { filter: brightness(0.97); }
@@ -6527,7 +6587,7 @@ button.home-pill:hover { transform: translateY(-2px); }
   grid-template-columns: auto 1fr;
   gap: 14px;
   align-items: start;
-  animation: fade-up 0.3s var(--ease);
+  animation: fade-up var(--dur-3) var(--ease);
 }
 
 .tip-icon {
@@ -7229,7 +7289,7 @@ button.home-pill:hover { transform: translateY(-2px); }
 .dz-progress i { height: 5px; border-radius: 999px; background: var(--surface-3); transition: background-color var(--dur-3) var(--ease); }
 .dz-progress i.is-on { background: linear-gradient(90deg, #ff8fa3, #ff3d6e); }
 .dz-step { display: none; }
-.dz-step.is-active { display: grid; gap: 12px; animation: fade-up 0.3s var(--ease); }
+.dz-step.is-active { display: grid; gap: 12px; animation: fade-up var(--dur-3) var(--ease); }
 .dz-step h3 { margin: 0; color: var(--ink); font-size: 18px; }
 .dz-step > p { margin: -6px 0 0; font-size: 13.5px; }
 .dz-sub { margin-top: 10px !important; }
@@ -7928,7 +7988,7 @@ button.home-pill:hover { transform: translateY(-2px); }
   color: var(--danger);
   font-size: 12.5px;
   font-weight: 600;
-  animation: fade-up 0.25s var(--ease);
+  animation: fade-up var(--dur-2) var(--ease);
 }
 
 .dz-inline-error .icon { flex: none; }
@@ -7948,7 +8008,7 @@ button.home-pill:hover { transform: translateY(-2px); }
 }
 
 .dz-alert[hidden] { display: none; }
-.dz-alert.is-anim { animation: dz-alert-in 0.28s var(--ease), dz-shake 0.45s 0.15s; }
+.dz-alert.is-anim { animation: dz-alert-in var(--dur-3) var(--ease), dz-shake 0.45s 0.15s; }
 
 .dz-alert-ico {
   display: grid;
@@ -8065,7 +8125,7 @@ button.home-pill:hover { transform: translateY(-2px); }
     radial-gradient(120% 140% at 0% 0%, color-mix(in srgb, var(--brand) 14%, transparent), transparent 60%),
     var(--surface-2);
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--brand) 16%, var(--border));
-  animation: fade-up 0.35s var(--ease);
+  animation: fade-up var(--dur-3) var(--ease);
 }
 
 .app-banner-ico {

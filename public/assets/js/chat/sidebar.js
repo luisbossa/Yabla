@@ -129,11 +129,56 @@ function renderChats(q, all) {
       : listHTML(rest));
 }
 
+// ==========================================================================
+// Movimiento de la lista
+// ==========================================================================
+const reduceMotion = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/** Los elementos de la lista entran escalonados (solo al cambiar de filtro o de vista, no con cada mensaje). */
+function animateList(list) {
+  if (!list || reduceMotion()) return;
+  [...list.children].forEach((li, i) => li.style.setProperty("--i", Math.min(i, 12)));
+  list.classList.remove("is-entering");
+  void list.offsetWidth; // reinicia la animación si se cambia de filtro muy rápido
+  list.classList.add("is-entering");
+  clearTimeout(list.enterTimer);
+  list.enterTimer = setTimeout(() => list.classList.remove("is-entering"), 700);
+}
+
+/** Lleva la píldora del filtro activo hasta su chip (sin animar la primera vez o si cambia el tamaño). */
+function moveFilterIndicator({ instant = false } = {}) {
+  const bar = $("#chatFilters");
+  const active = $(".chip.is-active", bar);
+  if (!active || bar.hidden || !active.offsetWidth) return;
+  let pill = $(".chips-indicator", bar);
+  if (!pill) {
+    pill = Object.assign(document.createElement("span"), { className: "chips-indicator" });
+    pill.setAttribute("aria-hidden", "true");
+    bar.prepend(pill);
+    bar.classList.add("has-indicator");
+    instant = true;
+  }
+  if (instant) pill.style.transition = "none";
+  pill.style.width = `${active.offsetWidth}px`;
+  pill.style.transform = `translateX(${active.offsetLeft}px)`;
+  if (instant) {
+    void pill.offsetWidth;
+    pill.style.transition = "";
+  }
+  // Si los filtros no caben (móvil estrecho), el activo se desplaza a la vista
+  const { scrollLeft, clientWidth } = bar;
+  if (active.offsetLeft < scrollLeft || active.offsetLeft + active.offsetWidth > scrollLeft + clientWidth) {
+    bar.scrollTo({ left: active.offsetLeft - 8, behavior: reduceMotion() ? "auto" : "smooth" });
+  }
+}
+
 function setArchivedView(open) {
   showArchived = open;
   $("#listSearch").value = "";
   renderLists();
   $("#chatList").closest(".panel").scrollTop = 0;
+  animateList($("#chatList"));
+  if (!open) requestAnimationFrame(() => moveFilterIndicator({ instant: true }));
 }
 
 export function renderLists() {
@@ -159,8 +204,11 @@ function renderBadges(all) {
 
   const unreadCount = all.filter((c) => c.unread && !c.archived).length;
   const chipCount = $('[data-filter-count="unread"]');
+  const countChanged = chipCount.hidden !== !unreadCount || chipCount.textContent !== String(unreadCount);
   chipCount.hidden = !unreadCount;
   chipCount.textContent = unreadCount;
+  // El número cambia el ancho del chip: la píldora se ajusta
+  if (countChanged) moveFilterIndicator();
 
   const total = all.reduce((n, c) => n + (c.muted || c.archived ? 0 : c.unread || 0), 0);
   document.title = total ? `(${total}) Chats - Yabla` : "Chats - Yabla";
@@ -181,15 +229,22 @@ export function setTab(tab) {
   document.getElementById("app").dataset.view = tab;
   renderLists();
   emit("tab", tab);
+  // Los filtros estaban ocultos en otras pestañas: la píldora se coloca sin animar
+  if (tab === "chats") requestAnimationFrame(() => moveFilterIndicator({ instant: true }));
 }
 
 function setFilter(name) {
+  if (name === filter) return;
   filter = name;
   $$("[data-filter]").forEach((chip) => {
     chip.classList.toggle("is-active", chip.dataset.filter === name);
     chip.setAttribute("aria-selected", chip.dataset.filter === name);
   });
+  moveFilterIndicator();
   renderLists();
+  $("#chatList").closest(".panel").scrollTo({ top: 0, behavior: reduceMotion() ? "auto" : "smooth" });
+  animateList($("#chatList"));
+  animateList($("#sidePeopleList"));
 }
 
 // ==========================================================================
@@ -306,4 +361,9 @@ export function initSidebar() {
   registerAction("open-archived", () => setArchivedView(true));
   registerAction("close-archived", () => setArchivedView(false));
   ["conversations", "presence", "typing", "stories", "receipts", "active", "drafts"].forEach((evt) => on(evt, renderLists));
+
+  // Píldora del filtro activo: al cargar las fuentes (cambian el ancho de los chips) y al cambiar el tamaño
+  moveFilterIndicator({ instant: true });
+  document.fonts?.ready.then(() => moveFilterIndicator({ instant: true }));
+  addEventListener("resize", () => moveFilterIndicator({ instant: true }));
 }

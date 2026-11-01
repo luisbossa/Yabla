@@ -19,25 +19,77 @@
   });
 
   // --- Filtros por categoría ---------------------------------------------------
-  document.querySelector(".yl-filters")?.addEventListener("click", (e) => {
-    const btn = e.target.closest("[data-faq-filter]");
-    if (!btn) return;
-    const cat = btn.dataset.faqFilter;
-    document.querySelectorAll("[data-faq-filter]").forEach((b) => {
-      b.classList.toggle("is-active", b === btn);
-      b.setAttribute("aria-selected", b === btn);
-    });
+  const filters = document.querySelector(".yl-filters");
+  const reduceMotion = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const LEAVE_MS = 140; // fundido de salida antes de cambiar las preguntas (igual que en CSS)
+  let filterRun = 0;
+
+  /** Píldora oscura que se desliza hasta el filtro activo (en móvil los filtros pueden ocupar dos líneas). */
+  function moveIndicator(instant = false) {
+    const active = filters?.querySelector(".is-active");
+    if (!active || !active.offsetWidth) return;
+    let pill = filters.querySelector(".yl-filters-pill");
+    if (!pill) {
+      pill = Object.assign(document.createElement("span"), { className: "yl-filters-pill" });
+      pill.setAttribute("aria-hidden", "true");
+      filters.prepend(pill);
+      filters.classList.add("has-pill");
+      instant = true;
+    }
+    if (instant) pill.style.transition = "none";
+    pill.style.width = `${active.offsetWidth}px`;
+    pill.style.height = `${active.offsetHeight}px`;
+    pill.style.transform = `translate(${active.offsetLeft}px, ${active.offsetTop}px)`;
+    if (instant) {
+      void pill.offsetWidth;
+      pill.style.transition = "";
+    }
+  }
+
+  function showCategory(cat) {
     let first = null;
+    let i = 0;
     list.querySelectorAll(".yl-item").forEach((item) => {
       const show = cat === "all" || item.dataset.cat === cat;
       item.hidden = !show;
-      if (show) item.classList.add("is-visible"); // los filtrados no esperan al scroll
+      if (show) {
+        item.classList.add("is-visible"); // los filtrados no esperan al scroll
+        item.style.setProperty("--i", i++);
+      }
       if (show && !first) first = item;
     });
     // Se abre la primera pregunta de la categoría
     list.querySelectorAll(".yl-item.is-open").forEach((item) => setOpen(item, false));
     if (first) setOpen(first, true);
+  }
+
+  filters?.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-faq-filter]");
+    if (!btn || btn.classList.contains("is-active")) return;
+    filters.querySelectorAll("[data-faq-filter]").forEach((b) => {
+      b.classList.toggle("is-active", b === btn);
+      b.setAttribute("aria-selected", b === btn);
+    });
+    moveIndicator();
+
+    // Las preguntas actuales se desvanecen y las nuevas entran escalonadas
+    if (reduceMotion()) return showCategory(btn.dataset.faqFilter);
+    const run = ++filterRun;
+    list.classList.remove("is-entering");
+    list.classList.add("is-leaving");
+    setTimeout(() => {
+      if (run !== filterRun) return; // se eligió otro filtro mientras tanto
+      showCategory(btn.dataset.faqFilter);
+      list.classList.remove("is-leaving");
+      void list.offsetWidth;
+      list.classList.add("is-entering");
+      setTimeout(() => run === filterRun && list.classList.remove("is-entering"), 900);
+    }, LEAVE_MS);
   });
+
+  moveIndicator(true);
+  document.fonts?.ready.then(() => moveIndicator(true));
+  window.addEventListener("resize", () => moveIndicator(true));
 
   // --- Alto fijo de la lista: el footer no se mueve al filtrar ni al abrir ----
   // Se reserva el alto de "Todas" con la respuesta más larga abierta.

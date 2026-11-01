@@ -262,6 +262,61 @@
 .yl-filters button:hover { border-color: var(--ink); color: var(--ink); }
 .yl-filters button.is-active { background: var(--ink); border-color: var(--ink); color: #fff; }
 
+/* Píldora deslizante (landing-extra.js): el fondo blanco de cada botón va en ::before para que
+   la píldora oscura pase por encima de él y por debajo del texto */
+.yl-filters.has-pill {
+  position: relative;
+  isolation: isolate;
+}
+
+.yl-filters.has-pill button {
+  position: relative;
+  background: transparent;
+  transition: color var(--dur-3) var(--ease), border-color var(--dur-3) var(--ease), transform var(--dur-2) var(--ease-spring);
+}
+
+.yl-filters.has-pill button::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: -2;
+  border-radius: inherit;
+  background: #fff;
+}
+
+.yl-filters.has-pill button.is-active { background: transparent; }
+.yl-filters.has-pill button:active { transform: scale(0.95); }
+
+.yl-filters-pill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  border-radius: 999px;
+  background: var(--ink);
+  box-shadow: 0 6px 16px -6px rgba(38, 36, 36, 0.55);
+  pointer-events: none;
+  transition: transform var(--dur-3) var(--ease), width var(--dur-3) var(--ease), height var(--dur-3) var(--ease);
+}
+
+/* Al cambiar de categoría: las preguntas se desvanecen y las nuevas entran escalonadas */
+.yl-accordion { transition: opacity 140ms var(--ease); }
+.yl-accordion.is-leaving { opacity: 0; }
+
+.yl-accordion.is-entering .yl-item:not([hidden]) {
+  animation: yl-item-in var(--dur-3) var(--ease) both;
+  animation-delay: calc(var(--i, 0) * 45ms);
+}
+
+@keyframes yl-item-in {
+  from { opacity: 0; transform: translateY(10px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .yl-filters-pill, .yl-accordion { transition: none; }
+  .yl-accordion.is-entering .yl-item:not([hidden]) { animation: none; }
+}
+
 /* Acordeón */
 .yl-accordion {
   display: grid;
@@ -342,6 +397,17 @@
 
 .yl-toggle::after { transform: translate(-50%, -50%) rotate(90deg); }
 .yl-item.is-open .yl-toggle { transform: rotate(135deg); background: var(--blue); }
+
+/* El botón responde al pasar el ratón y al pulsar la pregunta */
+.yl-toggle { transition: transform var(--dur-3) var(--ease-spring), background-color var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease); }
+.yl-q:hover .yl-toggle { box-shadow: 0 6px 14px -6px rgba(38, 36, 36, 0.6); }
+.yl-item:not(.is-open) .yl-q:hover .yl-toggle { transform: rotate(90deg) scale(1.06); }
+.yl-item.is-open .yl-q:hover .yl-toggle { transform: rotate(135deg) scale(1.06); }
+.yl-q:active .yl-toggle { transform: scale(0.9); }
+.yl-item.is-open .yl-q:active .yl-toggle { transform: rotate(135deg) scale(0.9); }
+.yl-q { transition: color var(--dur-2) var(--ease); }
+.yl-item:not(.is-open) .yl-q:hover .yl-qtext { color: var(--blue); }
+.yl-qtext { transition: color var(--dur-2) var(--ease); }
 
 /* Respuesta: se despliega con la altura animada (grid 0fr → 1fr) */
 .yl-a {

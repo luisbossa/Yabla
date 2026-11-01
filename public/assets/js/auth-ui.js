@@ -18,6 +18,26 @@
       input.type = show ? "text" : "password";
       setIcon(btn, show ? "eye-off" : "eye");
       btn.setAttribute("aria-label", show ? "Ocultar contraseña" : "Mostrar contraseña");
+      btn.classList.remove("is-swapping");
+      void btn.offsetWidth; // reinicia la animación del icono
+      btn.classList.add("is-swapping");
+    });
+  });
+
+  // Formularios que recargan la página (iniciar sesión): el botón muestra que está enviando
+  // y no se puede pulsar dos veces. Si el navegador bloquea el envío (campo vacío), no llega aquí.
+  document.querySelectorAll('form[method="post"]').forEach((form) => {
+    form.addEventListener("submit", () => {
+      const submit = form.querySelector('[type="submit"]');
+      submit?.classList.add("is-pending");
+      submit?.setAttribute("aria-busy", "true");
+    });
+  });
+  // Al volver atrás, el navegador puede mostrar la página tal como quedó: se quita el estado de envío
+  window.addEventListener("pageshow", () => {
+    document.querySelectorAll(".btn.is-pending").forEach((b) => {
+      b.classList.remove("is-pending");
+      b.removeAttribute("aria-busy");
     });
   });
 })();

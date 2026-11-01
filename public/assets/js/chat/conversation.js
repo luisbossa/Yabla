@@ -470,6 +470,12 @@ export async function openChat(id, { force = false } = {}) {
   }
   restoreDraft(conv);
   renderMessages(conv);
+  // Los mensajes del chat recién abierto entran con un fundido (no con cada mensaje nuevo)
+  messagesEl.classList.remove("is-entering");
+  void messagesEl.offsetWidth;
+  messagesEl.classList.add("is-entering");
+  clearTimeout(messagesEl.enterTimer);
+  messagesEl.enterTimer = setTimeout(() => messagesEl.classList.remove("is-entering"), 400);
   markRead(conv);
 
   if (isMobile()) {
