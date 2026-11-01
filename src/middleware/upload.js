@@ -41,11 +41,11 @@ module.exports = {
   /** Guarda el archivo subido y devuelve su URL pública (o null si no hay archivo). */
   async save(file) {
     if (!file) return null;
-    if (!config.blobToken) return `/uploads/${await File.save(file)}`;
+    if (!config.blobMode) return `/uploads/${await File.save(file)}`;
     const blob = await put(`uploads/${File.newId(file.originalname)}`, file.buffer, {
       access: "public",
       contentType: file.mimetype,
-      token: config.blobToken,
+      token: config.blobToken || undefined, // sin token: OIDC
     });
     return blob.url;
   },

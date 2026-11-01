@@ -259,7 +259,7 @@ En local, sin las variables de Turso, la app usa un archivo SQLite en `data/` y 
 
 Si ya tienes la base de datos en Turso, **se reutiliza tal cual**: la app añade sola las tablas y columnas nuevas al arrancar. Si es nueva:
 
-1. Crea una base de datos en [turso.tech](https://turso.tech), en la región más cercana a tus funciones de Vercel (por defecto *Washington, D.C.*, `iad1`: elige *AWS US East (Virginia)*).
+1. Crea una base de datos en [turso.tech](https://turso.tech) en *AWS US West (Oregon)*: las funciones de Vercel corren en Portland (`pdx1`, en `vercel.json`), al lado. Si eliges otra región, cambia `regions` en `vercel.json` a la más cercana.
 2. Copia la **URL** (`libsql://…turso.io`) y crea un **token** de lectura y escritura sin caducidad.
 
 ### 2. Pusher Channels

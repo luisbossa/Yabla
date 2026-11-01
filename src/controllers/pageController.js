@@ -23,7 +23,7 @@ exports.chat = (req, res) => {
       userId: req.user.id,
       sessionTag: req.session.tag,
       pusher: live.clientConfig(),
-      blobUploads: Boolean(config.blobToken),
+      blobUploads: config.blobMode, // "token", "oidc" o null
       uploadLimit: config.uploadLimit,
       videoUploadLimit: config.videoUploadLimit,
     },

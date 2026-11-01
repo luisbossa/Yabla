@@ -47,8 +47,11 @@ module.exports = {
     secret: process.env.PUSHER_SECRET,
     cluster: process.env.PUSHER_CLUSTER || "us2",
   },
-  // Vercel Blob para los archivos subidos; sin token se guardan en la base de datos (desarrollo local)
+  // Vercel Blob para los archivos subidos. Dos formas de conectarlo: token fijo (BLOB_READ_WRITE_TOKEN)
+  // o la conexión nueva de Vercel (BLOB_STORE_ID + credencial OIDC que Vercel da a cada función).
+  // Sin ninguna, los archivos se guardan en la base de datos (desarrollo local).
   blobToken: process.env.BLOB_READ_WRITE_TOKEN || null,
+  blobMode: process.env.BLOB_READ_WRITE_TOKEN ? "token" : process.env.BLOB_STORE_ID ? "oidc" : null,
   // Clave que debe enviar el cron externo a /api/cron/tick
   cronSecret: process.env.CRON_SECRET || null,
   // Contacto del emisor de notificaciones push (lo exige el estándar VAPID: mailto: o https:)

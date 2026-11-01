@@ -3,6 +3,7 @@
   "framework": null,
   "installCommand": "npm ci --omit=dev",
   "outputDirectory": "public",
+  "regions": ["pdx1"],
   "functions": {
     "api/index.js": {
       "maxDuration": 30,

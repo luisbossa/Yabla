@@ -14,9 +14,11 @@ let blobClient = null;
 
 async function uploadToBlob(file) {
   blobClient ||= import("https://esm.sh/@vercel/blob@2.8.0/client");
-  const { upload } = await blobClient;
+  // "token": upload() con token fijo; "oidc": uploadPresigned() (conexión nueva de Vercel)
+  const { upload, uploadPresigned } = await blobClient;
+  const send = blobUploads === "oidc" ? uploadPresigned : upload;
   const name = (file.name || "archivo").normalize("NFD").replace(/[^\w.-]+/g, "-").slice(-80);
-  const blob = await upload(`chat/${name}`, file, { access: "public", handleUploadUrl: "/api/blob/upload", contentType: file.type || undefined }).catch((err) => {
+  const blob = await send(`chat/${name}`, file, { access: "public", handleUploadUrl: "/api/blob/upload", contentType: file.type || undefined }).catch((err) => {
     blobClient = null; // si falló la descarga de la librería, se reintenta la próxima vez
     throw Object.assign(new Error("No se pudo subir el archivo. Revisa tu conexión e inténtalo de nuevo."), { cause: err });
   });
