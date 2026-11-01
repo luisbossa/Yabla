@@ -47,6 +47,8 @@ async function assertCanSend(req) {
   return peerId ? User.findById(peerId) : null;
 }
 
+exports.assertCanSend = assertCanSend;
+
 async function systemMessage(conversationId, actorId, action, extra = {}) {
   const message = await Message.create({ conversationId, senderId: actorId, type: "system", meta: { action, ...extra } });
   await realtime.message(message);
@@ -100,6 +102,61 @@ exports.messages = async (req, res) => {
   res.json({ messages, hasMore: messages.length === limit });
 };
 
+/**
+ * GET /api/conversations/:id/export?tz=America/Costa_Rica — el chat como archivo de texto, tal como
+ * lo ve el usuario (sin lo vaciado, lo eliminado para él ni los temporales caducados).
+ */
+exports.exportChat = async (req, res) => {
+  const { messageText } = require("../services/push");
+  const conv = req.conversation;
+  const PAGE = 500;
+  const messages = [];
+  for (let before = Number.MAX_SAFE_INTEGER; ; ) {
+    const page = await Message.list(conv.id, { before, after: req.member.cleared_id, limit: PAGE, viewerId: req.user.id });
+    messages.unshift(...page);
+    if (page.length < PAGE) break;
+    before = page[0].id;
+  }
+
+  const users = await User.findMany([...new Set(messages.map((m) => m.senderId).filter(Boolean))]);
+  const memberIds = await Conversation.memberIds(conv.id);
+  const peer = conv.type === "direct" ? await User.findById(memberIds.find((id) => id !== req.user.id)) : null;
+  const title = conv.type === "group" ? conv.name || "Grupo" : peer?.name || "Chat";
+
+  // Zona horaria del navegador (el servidor de Vercel está en UTC)
+  let timeZone = "America/Costa_Rica";
+  try {
+    if (req.query.tz) timeZone = new Intl.DateTimeFormat("es", { timeZone: String(req.query.tz) }).resolvedOptions().timeZone;
+  } catch {
+    /* zona no válida: se usa la de Costa Rica */
+  }
+  const when = new Intl.DateTimeFormat("es-CR", { timeZone, day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit", hour12: false });
+
+  const lines = messages
+    .filter((m) => m.type !== "system")
+    .map((m) => {
+      const name = m.senderId === req.user.id ? `${req.user.name} (tú)` : users.get(m.senderId)?.name || "Usuario";
+      let text = m.deletedAt ? "Se eliminó este mensaje" : m.type === "text" ? m.body : messageText(m) || m.type;
+      if (!m.deletedAt && m.type !== "text" && m.body && !text.includes(m.body)) text += ` — ${m.body}`;
+      if (m.type === "poll" && !m.deletedAt) {
+        const count = (i) => m.votes.filter((v) => v.option === i).length;
+        text += ` → ${m.meta.options.map((o, i) => `${o} (${count(i)})`).join(", ")}${m.meta.closedAt ? " · cerrada" : ""}`;
+      }
+      if (m.type === "location" && !m.deletedAt) text += ` (https://www.openstreetmap.org/?mlat=${m.meta.lat}&mlon=${m.meta.lng}#map=17/${m.meta.lat}/${m.meta.lng})`;
+      return `[${when.format(m.createdAt)}] ${name}: ${text}${m.editedAt ? " (editado)" : ""}`;
+    });
+
+  const header = [`Chat de Yabla: ${title}`, `Exportado el ${when.format(Date.now())} · ${lines.length} mensajes`, ""];
+  const file = `yabla-${title.normalize("NFD").replace(/\p{M}/gu, "").replace(/[^\w]+/g, "-").replace(/^-|-$/g, "").toLowerCase() || "chat"}.txt`;
+  res.set({
+    "Content-Type": "text/plain; charset=utf-8",
+    "Content-Disposition": `attachment; filename="${file}"`,
+    "Cache-Control": "no-store",
+  });
+  // BOM: así el Bloc de notas de Windows muestra bien las tildes y los emojis
+  res.send(`﻿${[...header, ...lines].join("\r\n")}\r\n`);
+};
+
 exports.media = async (req, res) => {
   res.json({ messages: await Message.media(req.conversation.id, req.member.cleared_id, req.user.id) });
 };
@@ -130,6 +187,8 @@ exports.send = async (req, res) => {
     else if (file.mimetype.startsWith("audio/") || req.body.kind === "audio") data.type = "audio";
     else data.type = "file";
     data.meta = { name: file.originalname.slice(0, 120), size: file.size, mime: file.mimetype };
+    // Ver una vez: solo fotos y videos; el archivo no viaja con el mensaje (ver specialMessageController)
+    if (validate.toBool(req.body.viewOnce) && (data.type === "image" || data.type === "video")) data.meta.viewOnce = true;
     if (data.type === "audio") data.meta.duration = Math.min(Number(req.body.duration) || 0, 60 * 30);
     if (data.type === "video") {
       // Datos que mide el navegador: se validan para pintar la miniatura con su proporción

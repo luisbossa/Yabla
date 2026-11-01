@@ -66,6 +66,14 @@ export const api = {
   react: (id, emoji) => req(`/api/messages/${id}/reactions`, { method: "POST", body: { emoji } }),
   star: (id) => req(`/api/messages/${id}/star`, { method: "POST" }),
   starred: () => req("/api/stars"),
+  searchMessages: (q) => req(`/api/search?q=${encodeURIComponent(q)}`),
+
+  // Encuestas, ubicación y "ver una vez"
+  createPoll: (id, data) => req(`/api/conversations/${id}/polls`, { method: "POST", body: data }),
+  vote: (messageId, options) => req(`/api/messages/${messageId}/vote`, { method: "POST", body: { options } }),
+  closePoll: (messageId) => req(`/api/messages/${messageId}/close-poll`, { method: "POST" }),
+  sendLocation: (id, data) => req(`/api/conversations/${id}/location`, { method: "POST", body: data }),
+  openViewOnce: (messageId) => req(`/api/messages/${messageId}/open`, { method: "POST" }),
   forward: (id, conversationIds) => req(`/api/messages/${id}/forward`, { method: "POST", body: { conversationIds } }),
   linkPreview: (url) => req(`/api/link-preview?url=${encodeURIComponent(url)}`),
   pin: (id) => req(`/api/messages/${id}/pin`, { method: "POST" }),

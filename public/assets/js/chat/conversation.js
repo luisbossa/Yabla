@@ -21,6 +21,7 @@ import { playIncoming, playInChat, playSent } from "./sounds.js";
 import { pushEnabled, showLocalNotification } from "./push.js";
 import { openVideoRecorder } from "./video-recorder.js";
 import { labelHTML } from "./dz-icons.js";
+import { pollHTML, locationHTML, viewOnceHTML, attachActions } from "./special.js";
 
 const app = $("#app");
 const messagesEl = $("#messages");
@@ -59,10 +60,10 @@ function highlight(html) {
 function replyQuote(msg) {
   const r = msg.replyTo;
   if (!r) return "";
-  const labels = { image: "Foto", video: "Video", audio: "Nota de voz", file: "Documento", sticker: "Sticker" };
-  const icons = { image: "image", video: "video", audio: "mic", file: "file", sticker: "sticker" };
-  const text = r.deleted ? "Mensaje eliminado" : r.body || labels[r.type] || "";
-  const kindIcon = !r.deleted && icons[r.type] ? icon(icons[r.type], "icon-sm") : "";
+  const labels = { image: "Foto", video: "Video", audio: "Nota de voz", file: "Documento", sticker: "Sticker", poll: "Encuesta", location: "Ubicación" };
+  const icons = { image: "image", video: "video", audio: "mic", file: "file", sticker: "sticker", poll: "bar-chart", location: "map-pin" };
+  const text = r.deleted ? "Mensaje eliminado" : r.viewOnce ? `${labels[r.type]} de ver una vez` : r.body || labels[r.type] || "";
+  const kindIcon = !r.deleted && (r.viewOnce || icons[r.type]) ? icon(r.viewOnce ? "view-once" : icons[r.type], "icon-sm") : "";
   return `
     <button class="quote" data-jump="${r.id}">
       ${r.mediaUrl ? `<img src="${r.mediaUrl}" alt="">` : ""}
@@ -80,7 +81,12 @@ function reactionsHTML(msg) {
 function bodyHTML(msg) {
   const conv = getConv(msg.conversationId);
   const text = msg.body ? `<p class="bubble-text">${highlight(renderMentions(conv, linkify(msg.body)))}</p>` : "";
+  if (msg.meta?.viewOnce && (msg.type === "image" || msg.type === "video")) return viewOnceHTML(msg);
   switch (msg.type) {
+    case "poll":
+      return pollHTML(msg);
+    case "location":
+      return locationHTML(msg);
     case "image":
       return { kind: "is-media", html: `<img src="${msg.mediaUrl}" alt="${escapeHTML(msg.body || "Imagen")}" data-lightbox loading="lazy">${text}` };
     case "video": {
@@ -718,36 +724,38 @@ export function videoInfo(file) {
 }
 
 /** Envía un video (grabado o de la galería): aparece al instante y se sube en segundo plano. */
-export function sendVideo(file, { duration: seconds = 0, width = 0, height = 0, caption = "" } = {}) {
-  const meta = { duration: Math.round(seconds * 10) / 10, width, height, size: file.size };
+export function sendVideo(file, { duration: seconds = 0, width = 0, height = 0, caption = "", viewOnce = false } = {}) {
+  const meta = { duration: Math.round(seconds * 10) / 10, width, height, size: file.size, ...(viewOnce ? { viewOnce: true } : {}) };
   const replyToId = composeState.mode === "reply" ? composeState.message.id : undefined;
   cancelContext();
   return send(
-    { file, kind: "video", text: caption || undefined, replyToId, duration: meta.duration, width, height },
-    { type: "video", mediaUrl: URL.createObjectURL(file), body: caption || null, meta }
+    { file, kind: "video", text: caption || undefined, replyToId, duration: meta.duration, width, height, viewOnce: viewOnce ? 1 : undefined },
+    { type: "video", mediaUrl: viewOnce ? null : URL.createObjectURL(file), body: caption || null, meta }
   );
 }
 
-export async function sendAttachment(file, caption = "", kind = "image") {
+/** `viewOnce`: foto o video que el destinatario solo puede abrir una vez. */
+export async function sendAttachment(file, caption = "", kind = "image", { viewOnce = false } = {}) {
   if (!file) return;
   const isVideo = kind === "video" || (kind !== "file" && file.type.startsWith("video/"));
   if (isVideo) {
     if (file.size > VIDEO_MAX_BYTES) return toast(`El video supera el límite de ${VIDEO_MAX_BYTES / 1024 / 1024} MB.`, { tone: "error", icon: "video" });
     const info = await videoInfo(file);
     if (info.duration > VIDEO_MAX_SECONDS + 1) return toast("El video dura más de 1 minuto. Recórtalo o grábalo desde «Grabar video».", { tone: "error", icon: "video" });
-    return sendVideo(file, { ...info, caption });
+    return sendVideo(file, { ...info, caption, viewOnce });
   }
   if (file.size > FILE_MAX_BYTES) {
     toast(`El archivo supera el límite de ${FILE_MAX_BYTES / 1024 / 1024} MB.`, { tone: "error", icon: "file" });
     return;
   }
   const isImage = file.type.startsWith("image/") && kind !== "file";
+  const once = viewOnce && isImage;
   const preview = isImage
-    ? { type: "image", mediaUrl: URL.createObjectURL(file), body: caption || null }
+    ? { type: "image", mediaUrl: once ? null : URL.createObjectURL(file), body: caption || null, ...(once ? { meta: { viewOnce: true } } : {}) }
     : { type: "file", meta: { name: file.name, size: file.size }, body: caption || null };
   const replyToId = composeState.mode === "reply" ? composeState.message.id : undefined;
   cancelContext();
-  return send({ file, text: caption || undefined, replyToId, kind: isImage ? undefined : "file" }, preview);
+  return send({ file, text: caption || undefined, replyToId, kind: isImage ? undefined : "file", viewOnce: once ? 1 : undefined }, preview);
 }
 
 // --- Escribiendo… ---
@@ -827,7 +835,7 @@ function openMessageMenu(msgEl, x, y) {
     (myReaction && !REACTIONS.includes(myReaction) ? `<button data-react-menu="${myReaction}" class="is-mine">${myReaction}</button>` : "") +
     `<button class="react-more" data-react-more data-popover="reactPicker" aria-label="Más reacciones">${icon("plus", "icon-sm")}</button>`;
   $('[data-msg-action="copy"]', menu).hidden = !msg.body;
-  $('[data-msg-action="forward"]', menu).hidden = !FORWARDABLE.includes(msg.type);
+  $('[data-msg-action="forward"]', menu).hidden = !FORWARDABLE.includes(msg.type) || Boolean(msg.meta?.viewOnce);
   const starred = state.starred.has(msg.id);
   $('[data-msg-action="star"] span', menu).textContent = starred ? "Quitar destacado" : "Destacar";
   $('[data-msg-action="star"] use', menu).setAttribute("href", `/assets/images/icons.svg#i-${starred ? "star-off" : "star"}`);
@@ -1133,15 +1141,6 @@ export function initConversation() {
       submitText();
     }
     if (e.key === "Escape" && composeState.mode) cancelContext();
-    if (e.key === "ArrowUp" && !input.value) {
-      // Editar el último mensaje propio, como en Telegram
-      const conv = activeConv();
-      const last = conv && [...messagesOf(conv.id).items].reverse().find((m) => m.senderId === state.me.id && m.type === "text" && !m.deletedAt && !m.pending);
-      if (last && Date.now() - last.createdAt < EDIT_WINDOW) {
-        e.preventDefault();
-        setContext("edit", last);
-      }
-    }
   });
 
   // Pegar imágenes o archivos (Ctrl+V) abre la vista previa
@@ -1196,6 +1195,7 @@ export function initConversation() {
     if (type === "this-or-that") return sendThisOrThat();
     if (type === "date") return openModal("modal-propose-date");
     if (type === "video") return openVideoRecorder();
+    if (attachActions[type]) return attachActions[type]();
     if (type === "payment") {
       const peer = peerOf(activeConv());
       return openModal("modal-wallet", peer?.id);

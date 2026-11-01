@@ -81,9 +81,15 @@ function messageText(msg) {
     case "text":
       return clip(msg.body);
     case "image":
+      if (meta.viewOnce) return "📷 Foto de ver una vez";
       return msg.body ? `📷 ${clip(msg.body)}` : "📷 Foto";
     case "video":
+      if (meta.viewOnce) return "🎥 Video de ver una vez";
       return msg.body ? `🎥 ${clip(msg.body)}` : "🎥 Video";
+    case "poll":
+      return `📊 Encuesta: ${clip(msg.body, 80)}`;
+    case "location":
+      return msg.body ? `📍 ${clip(msg.body, 60)}` : "📍 Ubicación";
     case "audio":
       return "🎤 Nota de voz";
     case "file":

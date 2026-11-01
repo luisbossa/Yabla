@@ -706,6 +706,20 @@
   box-shadow: 0 0 0 1px #5b8def, 0 0 0 5px rgba(91, 141, 239, 0.18) !important;
 }
 
+/* Campo que falta al pulsar "Entrar" (landing-auth.js): aro rojo con la misma forma que el de foco.
+   Va después de :focus para ganarle (el campo recibe el foco a la vez). */
+#main input.framer-form-input.lae-missing {
+  background-color: #fff !important;
+  box-shadow: 0 0 0 1px #ef4444, 0 0 0 5px rgba(239, 68, 68, 0.16) !important;
+}
+
+/* El formulario de Framer recorta lo que sale de su caja (overflow: hidden) y mide lo mismo
+   que el campo: sin esto, los aros de foco y de error se ven cortados arriba y abajo */
+#main form.framer-17960rj,
+#main .framer-7IJWt.framer-17pp9r1 {
+  overflow: visible !important;
+}
+
 /* --- Botón Entrar ------------------------------------------------------------ */
 #main button.framer-bJR9r {
   transition: transform var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease) !important;

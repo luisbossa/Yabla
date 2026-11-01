@@ -1,5 +1,5 @@
 const multer = require("multer");
-const { put } = require("@vercel/blob");
+const { put, del } = require("@vercel/blob");
 const config = require("../config");
 const File = require("../models/File");
 
@@ -48,5 +48,14 @@ module.exports = {
       token: config.blobToken || undefined, // sin token: OIDC
     });
     return blob.url;
+  },
+
+  /** Borra un archivo subido (de Vercel Blob o de la base de datos). Las URL ajenas se ignoran. */
+  async remove(url) {
+    if (!url) return;
+    if (url.startsWith("/uploads/")) return File.remove(url.slice("/uploads/".length));
+    if (config.blobMode && /^https:\/\/[a-z0-9]+\.public\.blob\.vercel-storage\.com\//i.test(url)) {
+      await del(url, { token: config.blobToken || undefined });
+    }
   },
 };

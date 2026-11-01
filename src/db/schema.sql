@@ -266,3 +266,43 @@ CREATE TABLE IF NOT EXISTS calls (
 );
 
 CREATE INDEX IF NOT EXISTS idx_calls_open ON calls(ended_at, caller_id, callee_id);
+
+-- Límite de intentos (inicio de sesión, registro, envíos…). En serverless no hay memoria
+-- compartida entre peticiones, así que el contador vive aquí. Ventana fija por clave.
+CREATE TABLE IF NOT EXISTS rate_limits (
+  key          TEXT    PRIMARY KEY,
+  window_start INTEGER NOT NULL,
+  hits         INTEGER NOT NULL
+);
+
+-- Encuestas (mensajes de tipo "poll"): un voto por persona y opción. Tabla propia (no el meta
+-- del mensaje) para que dos votos a la vez no se pisen.
+CREATE TABLE IF NOT EXISTS poll_votes (
+  message_id INTEGER NOT NULL REFERENCES messages(id) ON DELETE CASCADE,
+  user_id    INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  option     INTEGER NOT NULL,
+  created_at INTEGER NOT NULL,
+  PRIMARY KEY (message_id, user_id, option)
+);
+
+-- Fotos y videos de "ver una vez": quién la abrió ya (cada persona solo una vez)
+CREATE TABLE IF NOT EXISTS view_once_opens (
+  message_id INTEGER NOT NULL REFERENCES messages(id) ON DELETE CASCADE,
+  user_id    INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  opened_at  INTEGER NOT NULL,
+  PRIMARY KEY (message_id, user_id)
+);
+
+-- Índices de rendimiento. Varios los usan las tareas que corren cada minuto (services/cron.js):
+-- sin ellos recorrerían la tabla entera en cada pasada (y Turso cobra por filas leídas).
+CREATE INDEX IF NOT EXISTS idx_sessions_expires ON sessions(expires);
+-- "Cerrar las otras sesiones" busca por el usuario guardado dentro de la sesión
+CREATE INDEX IF NOT EXISTS idx_sessions_user ON sessions(json_extract(sess, '$.userId'));
+CREATE INDEX IF NOT EXISTS idx_rate_limits_window ON rate_limits(window_start);
+CREATE INDEX IF NOT EXISTS idx_stories_expires ON stories(expires_at);
+-- Movimientos de la billetera (enviados o recibidos)
+CREATE INDEX IF NOT EXISTS idx_transactions_from ON transactions(from_user_id, created_at);
+CREATE INDEX IF NOT EXISTS idx_transactions_to ON transactions(to_user_id, created_at);
+-- Solo las fotos/videos de "ver una vez" que aún tienen archivo (índice parcial: casi vacío)
+CREATE INDEX IF NOT EXISTS idx_messages_view_once ON messages(created_at)
+  WHERE media_url IS NOT NULL AND json_extract(meta, '$.viewOnce') = 1;

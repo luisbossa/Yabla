@@ -62,7 +62,6 @@
       40%, 80% { transform: translateX(8px); }
     }
     /* Campo que falta: borde rojo suave */
-    .lae-missing { box-shadow: 0 0 0 3px rgba(239, 68, 68, .18) !important; border-radius: 64px; }
     @media (prefers-reduced-motion: reduce) {
       #landingAuthError.is-in, #landingAuthError.is-in .lae-icon, #landingAuthError.is-shake { animation: lae-fade .2s both; }
       #landingAuthError.is-out { animation: lae-fade .2s reverse both; }
@@ -115,10 +114,9 @@
     if (missing) {
       const both = !username?.value.trim() && !password?.value;
       showError(both ? "Escribe tu usuario y tu contraseña." : missing === username ? "Escribe tu usuario." : "Escribe tu contraseña.", "Faltan datos");
-      // Se resalta el campo que falta y se pone el cursor ahí
-      const wrap = missing.parentElement;
-      wrap?.classList.add("lae-missing");
-      missing.addEventListener("input", () => wrap?.classList.remove("lae-missing"), { once: true });
+      // Se resalta el campo que falta (aro rojo en landing-extra.css) y se pone el cursor ahí
+      missing.classList.add("lae-missing");
+      missing.addEventListener("input", () => missing.classList.remove("lae-missing"), { once: true });
       missing.focus({ preventScroll: true });
       return;
     }

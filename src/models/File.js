@@ -21,6 +21,10 @@ const File = {
     return id;
   },
 
+  remove(id) {
+    return db.run("DELETE FROM files WHERE id = ?", [id]);
+  },
+
   async find(id) {
     const row = await db.get(SQL.byId, [id]);
     if (!row) return null;

@@ -202,11 +202,6 @@
                 <span><strong>Cambiar contraseña</strong><small>Te pediremos la actual</small></span>
                 <%- icon('chevron-right', 'icon-sm') %>
             </button>
-            <h4 data-kbd-only>Ayuda</h4>
-            <button class="setting-row setting-link" data-open="modal-shortcuts" data-kbd-only>
-                <span><strong>Atajos de teclado</strong><small>Ctrl + K para ir a cualquier chat</small></span>
-                <%- icon('chevron-right', 'icon-sm') %>
-            </button>
         </div>
     </div>
 </div>
@@ -381,24 +376,14 @@
     </div>
 </div>
 
-<!-- Buscador rápido (Ctrl + K) -->
+<!-- Buscador global: chats, mensajes de todos los chats y acciones (search.js) -->
 <div class="modal quick-modal" id="modal-quick">
-    <div class="modal-dialog quick-dialog" role="dialog" aria-label="Buscador rápido">
+    <div class="modal-dialog quick-dialog" role="dialog" aria-label="Buscar">
         <label class="quick-search">
             <%- icon('search') %>
-            <input type="search" id="quickInput" placeholder="Ir a un chat o acción…" autocomplete="off" role="combobox" aria-controls="quickList" aria-expanded="true">
-            <kbd>Esc</kbd>
+            <input type="search" id="quickInput" placeholder="Buscar chats, mensajes o acciones…" autocomplete="off" role="combobox" aria-controls="quickList" aria-expanded="true">
         </label>
         <ul class="quick-list" id="quickList" role="listbox"></ul>
-        <p class="quick-foot muted" data-kbd-only><kbd>↑</kbd><kbd>↓</kbd> moverse <kbd>Enter</kbd> abrir <kbd>Ctrl</kbd><kbd>/</kbd> ver atajos</p>
-    </div>
-</div>
-
-<!-- Atajos de teclado -->
-<div class="modal" id="modal-shortcuts">
-    <div class="modal-dialog">
-        <%- head('Atajos de teclado') %>
-        <dl class="shortcuts" id="shortcutsList"></dl>
     </div>
 </div>
 
@@ -702,6 +687,49 @@
             <div class="dz-alert" id="proposeAlert" role="alert" hidden></div>
             <button class="btn btn-primary btn-block" type="submit"><%- icon('calendar-heart') %>Enviar propuesta</button>
         </form>
+    </div>
+</div>
+
+<!-- Crear una encuesta (special.js) -->
+<div class="modal" id="modal-poll">
+    <div class="modal-dialog">
+        <%- head('Nueva encuesta') %>
+        <form class="stack" id="pollForm" novalidate>
+            <div class="field">
+                <label class="label" for="pollQuestion">Pregunta</label>
+                <input class="input" id="pollQuestion" maxlength="200" placeholder="Ej. ¿Dónde nos vemos el sábado?" required>
+            </div>
+            <div class="field">
+                <span class="label">Opciones</span>
+                <div class="poll-edit" id="pollOptions"></div>
+                <button type="button" class="btn btn-ghost poll-add" id="pollAddOption"><%- icon('plus', 'icon-sm') %>Añadir opción</button>
+            </div>
+            <label class="setting-row">
+                <span><strong>Permitir varias respuestas</strong><small>Cada persona puede elegir más de una opción</small></span>
+                <span class="switch"><input type="checkbox" id="pollMultiple"><span></span></span>
+            </label>
+            <button class="btn btn-primary btn-block" type="submit"><%- icon('bar-chart') %>Enviar encuesta</button>
+        </form>
+    </div>
+</div>
+
+<!-- Enviar la ubicación actual (special.js) -->
+<div class="modal" id="modal-location">
+    <div class="modal-dialog">
+        <%- head('Enviar tu ubicación') %>
+        <div class="stack">
+            <div class="location-preview" id="locationPreview"></div>
+            <div class="location-meta">
+                <small class="muted" id="locationAccuracy"></small>
+                <button type="button" class="btn btn-ghost location-retry" id="locationRetry"><%- icon('locate', 'icon-sm') %>Actualizar</button>
+            </div>
+            <div class="field">
+                <label class="label" for="locationLabel">Nombre del lugar <span class="muted">(opcional)</span></label>
+                <input class="input" id="locationLabel" maxlength="80" placeholder="Ej. Parque Central">
+            </div>
+            <p class="muted small"><%- icon('shield-check', 'icon-sm') %> Se envía tu ubicación de este momento, no en tiempo real.</p>
+            <button class="btn btn-primary btn-block" type="button" id="locationSend" disabled><%- icon('send') %>Enviar ubicación</button>
+        </div>
     </div>
 </div>
 

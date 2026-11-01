@@ -23,6 +23,10 @@ function errorHandler(err, req, res, next) {
   if (status >= 500) console.error(err);
   // errors: detalle por campo (p. ej. { birthdate: "…" }) para los formularios
   if (wantsJson(req)) return res.status(status).json({ error: message, ...(err.errors && status < 500 ? { errors: err.errors } : {}) });
+  // Demasiados intentos desde el formulario de /login: el aviso se muestra en el propio formulario
+  if (status === 429 && req.path === "/login") {
+    return res.status(429).render("pages/login", { title: "Iniciar sesión", styles: ["register"], error: message, next: "/chat", login: "" });
+  }
   res.status(status).render("pages/error", { styles: ["register"], title: "Error", status, message });
 }
 

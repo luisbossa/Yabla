@@ -16,7 +16,6 @@
                     <button role="menuitem" data-open="modal-qr"><%- icon('qr') %>Mi código QR</button>
                     <button role="menuitem" data-open="modal-wallet"><%- icon('wallet') %>Billetera</button>
                     <button role="menuitem" data-open="modal-settings"><%- icon('settings') %>Ajustes</button>
-                    <button role="menuitem" data-open="modal-shortcuts" data-kbd-only><%- icon('keyboard') %>Atajos de teclado</button>
                     <hr>
                     <button role="menuitem" class="is-danger" data-open="modal-logout"><%- icon('logout') %>Cerrar sesión</button>
                 </div>
@@ -27,7 +26,7 @@
     <label class="search">
         <%- icon('search', 'icon-sm') %>
         <input type="search" id="listSearch" placeholder="Buscar chats…" autocomplete="off">
-        <kbd class="search-kbd" data-open="modal-quick" title="Buscador rápido">Ctrl K</kbd>
+        <button type="button" class="search-all" data-open="modal-quick" title="Buscar en todos los chats y mensajes">Mensajes</button>
     </label>
 
     <div class="panel is-active" data-panel="chats">

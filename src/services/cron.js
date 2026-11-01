@@ -4,6 +4,8 @@ const Story = require("../models/Story");
 const session = require("../config/session");
 const scheduler = require("./scheduler");
 const calls = require("./calls");
+const rateLimit = require("../middleware/rateLimit");
+const special = require("../controllers/specialMessageController");
 
 const TASKS = [
   ["programados", scheduler.sendDue],
@@ -11,6 +13,8 @@ const TASKS = [
   ["estados", () => Story.purgeExpired()],
   ["sesiones", session.purge],
   ["llamadas", calls.expireUnanswered],
+  ["límites", rateLimit.purge],
+  ["ver una vez", special.purgeViewOnce],
 ];
 
 /** Ejecuta todas las tareas; un fallo en una no impide las demás. Devuelve las que fallaron. */

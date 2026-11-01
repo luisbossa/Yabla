@@ -4,7 +4,7 @@ import { $, $$, icon, escapeHTML, toast, toastError, prefs, isMobile, listTime }
 import { state, on, emit, getConv, upsertConversation, activeConv } from "./state.js";
 import { api } from "./api.js";
 import { socket } from "./socket.js";
-import { openModal, closeModal, onModalOpen, registerAction, openModals } from "./ui.js";
+import { openModal, closeModal, onModalOpen, registerAction } from "./ui.js";
 import { openChat, closeChat } from "./conversation.js";
 import { previewOf, previewIcon } from "./format.js";
 import { labelHTML, plainLabel, lookingHTML } from "./dz-icons.js";
@@ -489,18 +489,6 @@ export function initDiscover() {
     if (e.target.closest("[data-dz-more]")) e.target.closest(".dz-card").classList.toggle("is-expanded");
   });
 
-  // Teclado: ← paso · → me gusta · ↑ súper · Ctrl+Z deshacer
-  document.addEventListener("keydown", (e) => {
-    if ($("#discover").hidden || openModals().length || /INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName)) return;
-    const key = { ArrowLeft: "pass", ArrowRight: "like", ArrowUp: "superlike" }[e.key];
-    if (key) {
-      e.preventDefault();
-      decide(key);
-    } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z") {
-      e.preventDefault();
-      undo();
-    }
-  });
 
   // Filtros
   onModalOpen("modal-dating-filters", () => {

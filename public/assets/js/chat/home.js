@@ -218,7 +218,7 @@ function renderRecent() {
 // Consejo del día: descubre funciones
 // ==========================================================================
 const TIPS = [
-  { icon: "command", title: "Busca cualquier chat al instante", text: "Pulsa <kbd>Ctrl</kbd> <kbd>K</kbd> y escribe un nombre o una acción.", action: ["modal-quick", "Probar ahora"] },
+  { icon: "search", title: "Busca en todos tus chats", text: "Desde el buscador encuentras chats, acciones y cualquier mensaje que hayas enviado o recibido.", action: ["modal-quick", "Probar ahora"] },
   { icon: "calendar-clock", title: "Programa mensajes", text: "Haz clic derecho (o mantén pulsado) el botón de enviar para elegir el día y la hora." },
   { icon: "pin", title: "Fija lo importante", text: "Fija hasta 3 mensajes arriba de cada chat desde el menú del mensaje." },
   { icon: "timer", title: "Mensajes temporales", text: "En la info del chat puedes hacer que los mensajes desaparezcan a las 24 h, 7 o 90 días." },

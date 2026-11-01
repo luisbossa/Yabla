@@ -30,7 +30,13 @@ app.use((req, res, next) => {
     "X-Content-Type-Options": "nosniff",
     "X-Frame-Options": "DENY",
     "Referrer-Policy": "same-origin",
+    // Cámara, micrófono y pantalla (llamadas) y ubicación (compartir ubicación): solo la propia app
+    "Permissions-Policy": "camera=(self), microphone=(self), display-capture=(self), geolocation=(self), payment=(), usb=()",
+    // Otras webs abiertas desde Yabla no pueden controlar esta pestaña
+    "Cross-Origin-Opener-Policy": "same-origin",
   });
+  // En producción, el navegador recuerda usar siempre HTTPS
+  if (config.isProduction) res.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
   next();
 });
 

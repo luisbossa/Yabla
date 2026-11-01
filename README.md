@@ -7,7 +7,7 @@ App de **chat y videollamadas en tiempo real** hecha con Node.js, Express, EJS, 
 **Cuenta**
 - **Sin correo electrónico**: registro en un solo paso (nombre, usuario y contraseña de 6+ caracteres) con vista previa en vivo, comprobación del usuario mientras escribes, sugerencias si está ocupado, indicador de seguridad y foto opcional
 - Inicio de sesión con **@usuario** y contraseña (desde la landing o `/login`)
-- **Cambiar contraseña** desde tu perfil, Ajustes o Ctrl+K: pide la actual, muestra la seguridad de la nueva y puede cerrar la sesión en tus otros dispositivos
+- **Cambiar contraseña** desde tu perfil, Ajustes o el buscador: pide la actual, muestra la seguridad de la nueva y puede cerrar la sesión en tus otros dispositivos
 - Inicio de sesión desde la landing o desde `/login`, con sesiones guardadas en SQLite
 - **Mi perfil** con portada, vista previa y estadísticas: foto (o quitarla), nombre, usuario con comprobación en vivo, info con frases rápidas, teléfono, **cumpleaños** (tus contactos ven el aviso ese día) y **color de perfil** (portada y tu nombre en los grupos)
 - **Estado de disponibilidad**: Disponible, Ocupado, Ausente o **No molestar** (silencia los avisos); tus contactos lo ven en tu foto y en tu info
@@ -38,6 +38,10 @@ App de **chat y videollamadas en tiempo real** hecha con Node.js, Express, EJS, 
 - **Borradores** por chat: lo que dejas escrito se conserva al cambiar de chat o recargar
 - Búsqueda en la lista y dentro de la conversación, scroll infinito del historial
 - Pegar o arrastrar imágenes, sonido y notificaciones del navegador
+- **Encuestas** en chats y grupos: hasta 12 opciones, una o varias respuestas, resultados en vivo con barras, quién votó qué y cerrar la encuesta
+- **Fotos y videos de «ver una vez»**: se abren una sola vez a pantalla completa; no se pueden reenviar ni aparecen en búsquedas ni en multimedia, y el archivo se borra cuando todos la abrieron (o a los 14 días)
+- **Compartir ubicación**: tarjeta con mapa de OpenStreetMap, nombre del lugar opcional y botones «Ver mapa» y «Cómo llegar»
+- **Exportar un chat** como archivo de texto (panel de información → «Exportar chat»)
 
 **Llamadas (WebRTC)**
 - Llamadas de voz y videollamadas 1 a 1 con timbre, aceptar o rechazar
@@ -56,7 +60,7 @@ App de **chat y videollamadas en tiempo real** hecha con Node.js, Express, EJS, 
 **Conocer (citas, opcional)**
 - Pestaña **Conocer**: solo participas si activas tu perfil de citas; al hacer **match** mutuo se abre un chat normal de Yabla (marcado con ♥)
 - Perfil de citas en 4 pasos: hasta 6 fotos, fecha de nacimiento (**solo mayores de 18**), género, a quién quieres conocer, qué buscas, provincia, intereses (3–8) y hasta 3 preguntas
-- Pila de tarjetas estilo Tinder: arrastrar o botones (✕ paso · ★ súper like · ♥ me gusta · ↺ deshacer el último paso) y teclado (← → ↑, `Ctrl + Z`); toca la foto para ver las demás
+- Pila de tarjetas estilo Tinder: arrastrar o botones (✕ paso · ★ súper like · ♥ me gusta · ↺ deshacer el último paso); toca la foto para ver las demás
 - Sellos al arrastrar, pantalla **«¡Es un match!»** en tiempo real para los dos, insignia de likes recibidos y 3 súper likes al día
 - **Afinidad** por intereses comunes, distancia aproximada por provincia (nunca la ubicación exacta) y filtros de edad, distancia, solo verificados y solo con intereses en común
 - **Rompehielos** en el chat de un match: ideas de primer mensaje, juego **«Esto o aquello»** y **propuesta de cita** (videollamada o lugar) que se acepta en el chat y ofrece programar un recordatorio
@@ -78,7 +82,7 @@ App de **chat y videollamadas en tiempo real** hecha con Node.js, Express, EJS, 
 - **Temas**: Sistema (automático), Claro, Sepia, Oscuro, Atenuado, Océano y Medianoche (negro puro para OLED), desde el botón "Tema" de la barra lateral o en Ajustes
 - **Apariencia** en Ajustes: color de la app (6 colores, combinables con cualquier tema), fondo del chat (5 estilos) y tamaño del texto
 - Botón **Salir** en la barra lateral para cerrar sesión
-- **Buscador rápido `Ctrl + K`** para saltar a cualquier chat o acción, y atajos de teclado (`Ctrl + /` los muestra todos). En teléfonos y tabletas táctiles no hay atajos ni indicaciones de teclado; el buscador sigue disponible desde «Buscar»
+- **Buscador global** (botón «Mensajes» del buscador de la lista o «Buscar» en el inicio): chats, acciones y **mensajes de todos los chats**, sin importar tildes ni mayúsculas, con salto al mensaje encontrado
 
 ### Notificaciones en el teléfono
 
@@ -113,6 +117,11 @@ En producción usa `npm start`. La configuración se lee de un archivo `.env` (c
 | `npm run dev` | Inicia con nodemon (reinicia al guardar) |
 | `npm run seed` | Crea los datos de demostración si la base está vacía |
 | `npm run db:reset` | Borra toda la base de datos y vuelve a crear los datos demo |
+| `npm test` | Pruebas automáticas de la API (ver abajo) |
+
+### Pruebas
+
+`npm test` ejecuta las pruebas de [`test/`](test/) con el runner de Node (sin dependencias extra). Cada archivo arranca la app real contra una base SQLite temporal con los usuarios de demostración, sin Turso, Pusher ni Blob. Cubren inicio de sesión y límites de intentos, mensajes, búsqueda, exportación, encuestas, ubicación, «ver una vez», llamadas y el cron.
 
 ### Cuentas de demostración
 
@@ -167,7 +176,7 @@ Para probar el tiempo real y las llamadas, abre dos navegadores (o una ventana n
 
 | Módulo | Responsabilidad |
 |---|---|
-| `main.js` | Arranque, eventos en tiempo real, clics globales y teclado |
+| `main.js` | Arranque, eventos en tiempo real y clics globales |
 | `state.js` | Estado compartido y bus de eventos |
 | `api.js` / `socket.js` | Comunicación con el servidor (`socket.js`: Pusher con la interfaz `on`/`emit`) |
 | `sidebar.js` | Lista de chats, pestañas e insignias |
@@ -179,7 +188,8 @@ Para probar el tiempo real y las llamadas, abre dos navegadores (o una ventana n
 | `message-extras.js` | Reenviar mensajes y mensajes destacados |
 | `link-preview.js` | Tarjetas de vista previa de enlaces |
 | `appearance.js` | Color, fondo del chat y tamaño del texto |
-| `shortcuts.js` | Buscador rápido (Ctrl + K) y atajos de teclado |
+| `search.js` | Buscador global: chats, acciones y mensajes de todos los chats |
+| `special.js` | Encuestas, ubicación, fotos de «ver una vez» y exportar el chat |
 | `chat-actions.js` | Reacciones, deslizar para responder, selección, eliminar, info del mensaje y fijados |
 | `mentions.js` | @menciones en grupos |
 | `timed.js` | Mensajes temporales y programados |
@@ -225,6 +235,11 @@ Todas las rutas `/api/*` (salvo la de disponibilidad) requieren sesión y respon
 | `GET /api/dating/matches` · `GET /api/dating/likes` · `DELETE /api/dating/matches/:id` | Matches, likes recibidos y deshacer un match |
 | `POST /api/dating/report` | Reportar (`userId`, `reason`, `details`): bloquea y deshace el match |
 | `POST /api/conversations/:id/this-or-that` · `POST /api/conversations/:id/date` · `POST /api/messages/:id/answer` | «Esto o aquello», propuesta de cita y responderlos |
+| `GET /api/search?q=` | Búsqueda en todos los chats (mín. 2 caracteres, sin tildes ni mayúsculas) |
+| `POST /api/conversations/:id/polls` · `POST /api/messages/:id/vote` · `POST /api/messages/:id/close-poll` | Encuestas: crear (`question`, `options`, `multiple`), votar (`options`: índices; `[]` quita el voto) y cerrar |
+| `POST /api/conversations/:id/location` | Enviar una ubicación (`lat`, `lng`, `accuracy`, `label`) |
+| `POST /api/messages/:id/open` | Abrir una foto o video de «ver una vez» (una sola vez por persona) |
+| `GET /api/conversations/:id/export?tz=` | Descargar el chat como texto |
 
 ## Tiempo real (Pusher Channels)
 
@@ -310,6 +325,12 @@ Todas están documentadas en [`.env.example`](.env.example). El archivo `.env` e
 - Pon `SEED_DEMO=false` antes de abrir la app al público.
 - Para llamadas entre redes distintas (datos móviles, NAT estrictos) añade un servidor **TURN** en `ICE_SERVERS`.
 - **Notificaciones push:** si cambian las claves VAPID (por ejemplo, al borrar la base de datos sin tenerlas en el entorno), cada dispositivo se vuelve a suscribir solo la próxima vez que abra Yabla.
+
+## Seguridad
+
+- **Límite de intentos** guardado en la base de datos (funciona aunque Vercel use varias instancias): 10 intentos de inicio de sesión por cuenta y 30 por IP cada 15 min, 10 registros por IP y hora, 120 mensajes por minuto, y límites en búsqueda, vista previa de enlaces, billetera, subidas y llamadas. Al pasarse se responde 429 con `Retry-After`
+- El inicio de sesión tarda lo mismo exista o no el usuario (no delata qué cuentas existen)
+- Cabeceras: `Permissions-Policy` (cámara, micrófono, pantalla y ubicación solo para la app), `Cross-Origin-Opener-Policy`, `X-Frame-Options`, `nosniff` y HSTS en producción
 
 ## Tecnologías
 

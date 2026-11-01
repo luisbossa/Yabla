@@ -1,4 +1,7 @@
 const bcrypt = require("bcryptjs");
+
+// Hash de relleno para verifyPassword cuando el usuario no existe (mismo coste que los reales)
+const DUMMY_HASH = bcrypt.hashSync("yabla-usuario-inexistente", 10);
 const db = require("../config/database");
 const config = require("../config");
 const presence = require("../services/presence");
@@ -98,8 +101,10 @@ const User = {
     return changes;
   },
 
+  /** Si el usuario no existe se compara igual con un hash cualquiera: así tarda lo mismo y no delata qué usuarios existen. */
   verifyPassword(user, password) {
-    return Boolean(user) && bcrypt.compareSync(password, user.password_hash);
+    const matches = bcrypt.compareSync(password, user?.password_hash || DUMMY_HASH);
+    return Boolean(user) && matches;
   },
 
   search(meId, query, limit = 20) {

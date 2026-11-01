@@ -14,7 +14,10 @@ async function init() {
   }
 
   // Crea las tablas si no existen (SQLite local o Turso)
-  await db.init();
+  if (await db.init()) {
+    // Tras una migración: texto de búsqueda de los mensajes anteriores a la búsqueda global
+    await require("./models/Message").backfillSearch();
+  }
 
   // Primer despliegue: datos de demostración si la base está vacía (SEED_DEMO=true)
   if (config.seedDemo) {

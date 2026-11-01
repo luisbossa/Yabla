@@ -11,14 +11,20 @@ const live = require("../controllers/realtimeController");
 const calls = require("../controllers/callController");
 const blob = require("../controllers/blobController");
 const cron = require("../controllers/cronController");
+const special = require("../controllers/specialMessageController");
 const upload = require("../middleware/upload");
 const h = require("../utils/asyncHandler");
 const { requireApiAuth } = require("../middleware/auth");
+const rateLimit = require("../middleware/rateLimit");
+
+const MIN = 60 * 1000;
+// Límites por usuario (o por IP sin sesión) contra abusos: spam, fuerza bruta y peticiones costosas
+const limit = (name, max, windowMs = MIN, by = rateLimit.byUser) => h(rateLimit({ name, max, windowMs, by }));
 
 const router = express.Router();
 
 // Pública: disponibilidad del nombre de usuario durante el registro
-router.get("/username-available", h(auth.checkUsername));
+router.get("/username-available", limit("username-check", 60, MIN, (req) => req.ip), h(auth.checkUsername));
 
 // Sin sesión: los llaman Pusher (firma propia) y el cron externo (CRON_SECRET)
 router.post("/realtime/webhook", h(live.webhook));
@@ -34,20 +40,20 @@ router.post("/realtime/receipt", h(live.receipt));
 router.post("/realtime/visibility", h(live.visibility));
 
 // Llamadas (la señalización WebRTC va directa entre navegadores por Pusher)
-router.post("/calls", h(calls.invite));
+router.post("/calls", limit("call", 20), h(calls.invite));
 router.post("/calls/:id/accept", h(calls.accept));
 router.post("/calls/:id/reject", h(calls.reject));
 router.post("/calls/:id/end", h(calls.end));
 router.post("/calls/:id/timeout", h(calls.timeout));
 
 // Subida directa de adjuntos a Vercel Blob
-router.post("/blob/upload", h(blob.token));
+router.post("/blob/upload", limit("upload", 40), h(blob.token));
 
 // Usuario actual
 router.get("/bootstrap", h(users.bootstrap));
 router.patch("/me", upload.image.single("avatar"), h(users.updateProfile));
 router.patch("/me/settings", h(users.updateSettings));
-router.patch("/me/password", h(users.changePassword));
+router.patch("/me/password", limit("password", 10, 15 * MIN), h(users.changePassword));
 router.get("/me/qr", h(users.qr));
 
 // Notificaciones push de este dispositivo
@@ -68,8 +74,11 @@ router.use("/conversations/:id", h(conversations.loadMembership));
 router.get("/conversations/:id", h(conversations.show));
 router.delete("/conversations/:id", h(conversations.remove));
 router.get("/conversations/:id/messages", h(conversations.messages));
-router.post("/conversations/:id/messages", upload.chat.single("file"), h(conversations.send));
+router.post("/conversations/:id/messages", limit("send", 120), upload.chat.single("file"), h(conversations.send));
 router.get("/conversations/:id/media", h(conversations.media));
+router.get("/conversations/:id/export", limit("export", 10), h(conversations.exportChat));
+router.post("/conversations/:id/polls", limit("send", 120), h(special.createPoll));
+router.post("/conversations/:id/location", limit("send", 120), h(special.sendLocation));
 router.patch("/conversations/:id", upload.image.single("avatar"), h(conversations.updateGroup));
 router.patch("/conversations/:id/settings", h(conversations.updateSettings));
 router.post("/conversations/:id/clear", h(conversations.clear));
@@ -83,7 +92,8 @@ router.delete("/conversations/:id/members/me", h(conversations.leave));
 
 // Mensajes
 router.get("/stars", h(messages.starred));
-router.get("/link-preview", h(messages.linkPreview));
+router.get("/search", limit("search", 60), h(messages.search));
+router.get("/link-preview", limit("link-preview", 60), h(messages.linkPreview));
 router.post("/messages/hide", h(messages.hide));
 router.delete("/scheduled/:id", h(messages.cancelScheduled));
 router.post("/scheduled/:id/send", h(messages.sendScheduledNow));
@@ -95,6 +105,9 @@ router.post("/messages/:id/star", h(messages.star));
 router.post("/messages/:id/forward", h(messages.forward));
 router.post("/messages/:id/pin", h(messages.pin));
 router.post("/messages/:id/answer", h(dating.answer));
+router.post("/messages/:id/vote", limit("vote", 60), h(special.vote));
+router.post("/messages/:id/close-poll", h(special.closePoll));
+router.post("/messages/:id/open", h(special.openViewOnce));
 router.get("/messages/:id/info", h(messages.info));
 
 // Estados
@@ -121,6 +134,6 @@ router.post("/dating/report", h(dating.report));
 
 // Billetera
 router.get("/wallet", h(wallet.show));
-router.post("/wallet/send", h(wallet.send));
+router.post("/wallet/send", limit("wallet", 20), h(wallet.send));
 
 module.exports = router;

@@ -72,8 +72,9 @@ export function paymentText(msg) {
 export function previewIcon(msg) {
   if (!msg) return null;
   if (msg.deletedAt) return "ban";
-  const icons = { image: "image", video: "video", audio: "mic", file: "file", sticker: "sticker", payment: "wallet", date: "calendar-heart", game: "dice" };
+  const icons = { image: "image", video: "video", audio: "mic", file: "file", sticker: "sticker", payment: "wallet", date: "calendar-heart", game: "dice", poll: "bar-chart", location: "map-pin" };
   if (msg.type === "call") return msg.meta?.callType === "video" ? "video" : "phone";
+  if (msg.meta?.viewOnce) return "view-once";
   return icons[msg.type] || null;
 }
 
@@ -88,8 +89,10 @@ export function previewOf(conv, msg = conv.lastMessage) {
   if (msg.type === "date") return `${msg.senderId === state.me.id ? "Tú: " : ""}Propuesta de cita · ${msg.meta?.kind === "place" ? msg.meta.place : "Videollamada"}`;
 
   const labels = {
-    image: msg.body || "Foto",
-    video: msg.body || `Video (${duration(msg.meta?.duration)})`,
+    image: msg.meta?.viewOnce ? "Foto de ver una vez" : msg.body || "Foto",
+    video: msg.meta?.viewOnce ? "Video de ver una vez" : msg.body || `Video (${duration(msg.meta?.duration)})`,
+    poll: `Encuesta: ${msg.body}`,
+    location: msg.body || "Ubicación",
     audio: `Nota de voz (${duration(msg.meta?.duration)})`,
     file: msg.meta?.name || "Documento",
     sticker: "Sticker",

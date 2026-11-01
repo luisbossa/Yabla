@@ -73,6 +73,12 @@ exports.starred = async (req, res) => {
   res.json({ messages: await Star.list(req.user.id) });
 };
 
+/** Búsqueda en todos los chats (buscador de la barra lateral). Mínimo 2 caracteres. */
+exports.search = async (req, res) => {
+  const q = validate.str(req.query.q, 100);
+  res.json({ messages: q && q.length >= 2 ? await Message.search(req.user.id, q) : [] });
+};
+
 // ==========================================================================
 // Reenviar a uno o varios chats (máx. 5 a la vez, como WhatsApp)
 // ==========================================================================
@@ -81,7 +87,8 @@ const MAX_FORWARD = 5;
 
 exports.forward = async (req, res) => {
   const original = req.message;
-  if (original.deleted_at || !FORWARDABLE.includes(original.type)) throw httpError(400, "Este mensaje no se puede reenviar.");
+  const viewOnce = JSON.parse(original.meta || "{}").viewOnce;
+  if (original.deleted_at || !FORWARDABLE.includes(original.type) || viewOnce) throw httpError(400, "Este mensaje no se puede reenviar.");
   const targets = validate.idList(req.body.conversationIds).slice(0, MAX_FORWARD);
   if (!targets.length) throw httpError(422, "Elige al menos un chat.");
 

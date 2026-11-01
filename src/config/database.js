@@ -58,6 +58,8 @@ const COLUMN_MIGRATIONS = [
   // Presencia (antes en memoria): la marcan los webhooks de Pusher y el latido de la app visible
   ["users", "online", "INTEGER NOT NULL DEFAULT 0"],
   ["users", "active_until", "INTEGER NOT NULL DEFAULT 0"],
+  // Texto del mensaje sin tildes y en minúsculas para la búsqueda global (Message.searchText)
+  ["messages", "search_text", "TEXT"],
 ];
 
 // Índices sobre columnas añadidas por migración (deben crearse después de ellas)
@@ -105,6 +107,7 @@ const db = {
   /**
    * Crea las tablas si no existen y aplica las migraciones pendientes. Se llama una vez al arrancar
    * (en Vercel, en cada instancia nueva): si la huella del esquema no cambió, no se repite.
+   * Devuelve true si aplicó cambios (para las tareas que solo hacen falta tras una migración).
    */
   async init() {
     if (isLocal) {
@@ -120,7 +123,7 @@ const db = {
       .execute("SELECT value FROM app_settings WHERE key = 'schema_version'")
       .then((r) => r.rows[0]?.[0])
       .catch(() => null); // base de datos nueva: aún no existe la tabla
-    if (current === version) return;
+    if (current === version) return false;
 
     await client.executeMultiple(schema);
     await migrate();
@@ -128,6 +131,7 @@ const db = {
       sql: "INSERT INTO app_settings (key, value) VALUES ('schema_version', ?) ON CONFLICT (key) DO UPDATE SET value = excluded.value",
       args: [version],
     });
+    return true;
   },
 
   close() {
