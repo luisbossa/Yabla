@@ -9,10 +9,11 @@ const background = require("../utils/background");
 const enabled = Boolean(config.pusher.appId && config.pusher.key && config.pusher.secret);
 if (!enabled) console.warn("⚠️  Sin PUSHER_APP_ID / PUSHER_KEY / PUSHER_SECRET: no habrá eventos en tiempo real.");
 
-const pusher = enabled ? new Pusher({ ...config.pusher, useTLS: true }) : null;
+const { prefix, ...credentials } = config.pusher;
+const pusher = enabled ? new Pusher({ ...credentials, useTLS: true }) : null;
 
-const channel = (userId) => `private-user-${userId}`;
-const callChannel = (callId) => `presence-call-${callId}`;
+const channel = (userId) => `private-${prefix}user-${userId}`;
+const callChannel = (callId) => `presence-${prefix}call-${callId}`;
 
 // Pusher rechaza eventos de más de 10 KB y admite hasta 100 canales por llamada
 const MAX_PAYLOAD = 9500;

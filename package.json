@@ -29,6 +29,9 @@
   "devDependencies": {
     "nodemon": "^3.1.9"
   },
+  "overrides": {
+    "whatwg-url": "14.2.0"
+  },
   "private": true,
   "engines": {
     "node": "22.x"

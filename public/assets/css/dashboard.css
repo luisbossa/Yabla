@@ -20,7 +20,7 @@ body {
   gap: var(--gap);
   height: 100dvh;
   padding: var(--gap);
-  transition: grid-template-columns 0.35s var(--ease);
+  transition: grid-template-columns var(--dur-3) var(--ease);
 }
 
 .app.has-info {
@@ -57,7 +57,7 @@ body {
   width: 46px;
   height: 46px;
   border-radius: 14px;
-  transition: transform 0.2s var(--ease);
+  transition: transform var(--dur-2) var(--ease);
 }
 
 .rail-logo:hover {
@@ -86,7 +86,7 @@ body {
   color: var(--muted);
   font-size: 11px;
   font-weight: 600;
-  transition: color 0.2s;
+  transition: color var(--dur-2) var(--ease);
 }
 
 /* El icono va dentro de una "píldora" (estilo Material 3) */
@@ -96,7 +96,7 @@ body {
   height: 22px;
   padding: 6px 14px;
   border-radius: var(--pill);
-  transition: background-color 0.2s, color 0.2s, transform 0.2s var(--ease);
+  transition: background-color var(--dur-2) var(--ease), color var(--dur-2) var(--ease), transform var(--dur-2) var(--ease);
 }
 
 .rail-btn:hover {
@@ -138,7 +138,7 @@ body {
   object-fit: cover;
   border: 2px solid var(--surface);
   box-shadow: 0 0 0 2px var(--brand);
-  transition: transform 0.2s var(--ease);
+  transition: transform var(--dur-2) var(--ease);
 }
 
 .rail-me:hover img {
@@ -208,7 +208,7 @@ body {
   background: var(--surface-2);
   border: 1px solid transparent;
   color: var(--muted);
-  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+  transition: border-color var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease), background-color var(--dur-2) var(--ease);
 }
 
 .search:focus-within {
@@ -294,7 +294,7 @@ body {
   padding: 2px;
   border-radius: 50%;
   background: conic-gradient(from 200deg, #7aa6ea, var(--brand-2), #b86df0, #7aa6ea);
-  transition: transform 0.2s var(--ease);
+  transition: transform var(--dur-2) var(--ease);
 }
 
 .story-ring-sm {
@@ -344,7 +344,7 @@ body {
   padding: 12px 14px;
   border-radius: 18px;
   text-align: left;
-  transition: background-color 0.15s, transform 0.15s var(--ease);
+  transition: background-color var(--dur-1) var(--ease), transform var(--dur-1) var(--ease);
 }
 
 .conv:hover {
@@ -480,7 +480,7 @@ body {
   border-radius: 50%;
   color: var(--muted);
   opacity: 0;
-  transition: width 0.15s, opacity 0.15s, margin 0.15s, background-color 0.15s;
+  transition: width var(--dur-1) var(--ease), opacity var(--dur-1) var(--ease), margin var(--dur-1) var(--ease), background-color var(--dur-1) var(--ease);
 }
 
 .conv:hover .conv-more,
@@ -523,7 +523,7 @@ body {
   color: var(--text);
   font-size: 13px;
   font-weight: 600;
-  transition: background-color 0.2s, color 0.2s;
+  transition: background-color var(--dur-2) var(--ease), color var(--dur-2) var(--ease);
 }
 
 .chip:hover {
@@ -592,7 +592,7 @@ body {
   text-align: left;
   color: var(--ink);
   font-weight: 600;
-  transition: background-color 0.15s;
+  transition: background-color var(--dur-1) var(--ease);
 }
 
 .new-item:hover,
@@ -656,14 +656,14 @@ body {
   transform: translateY(-6px) scale(0.98);
   transform-origin: top right;
   /* visibility cambia al instante al abrir y con retraso al cerrar */
-  transition: opacity 0.18s, transform 0.2s var(--ease), visibility 0s linear 0.2s;
+  transition: opacity var(--dur-2) var(--ease), transform var(--dur-2) var(--ease), visibility 0s linear 0.2s;
 }
 
 .dropdown.is-open .menu {
   opacity: 1;
   visibility: visible;
   transform: none;
-  transition: opacity 0.18s, transform 0.2s var(--ease), visibility 0s;
+  transition: opacity var(--dur-2) var(--ease), transform var(--dur-2) var(--ease), visibility 0s;
 }
 
 .menu button {
@@ -1032,7 +1032,7 @@ body {
   border-radius: 2px;
   background: currentColor;
   opacity: 0.35;
-  transition: opacity 0.15s;
+  transition: opacity var(--dur-1) var(--ease);
 }
 
 .audio-wave i.is-played {
@@ -1083,7 +1083,7 @@ body {
   border-radius: 26px;
   background: var(--surface-2);
   border: 1px solid transparent;
-  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+  transition: border-color var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease), background-color var(--dur-2) var(--ease);
 }
 
 .composer-bar:focus-within {
@@ -1119,7 +1119,7 @@ body {
   background: var(--bubble-out);
   color: #fff;
   box-shadow: 0 6px 16px color-mix(in srgb, var(--brand-2) 35%, transparent);
-  transition: transform 0.15s var(--ease), opacity 0.2s;
+  transition: transform var(--dur-1) var(--ease), opacity var(--dur-2) var(--ease);
 }
 
 .send-btn:hover {
@@ -1186,7 +1186,7 @@ body {
   background: var(--surface-2);
   border: 1px solid transparent;
   color: var(--muted);
-  transition: border-color 0.2s, background-color 0.2s;
+  transition: border-color var(--dur-2) var(--ease), background-color var(--dur-2) var(--ease);
 }
 
 .emoji-search:focus-within {
@@ -1224,7 +1224,7 @@ body {
   color: var(--muted);
   filter: grayscale(1);
   opacity: 0.6;
-  transition: background-color 0.15s, opacity 0.15s, filter 0.15s;
+  transition: background-color var(--dur-1) var(--ease), opacity var(--dur-1) var(--ease), filter var(--dur-1) var(--ease);
 }
 
 .emoji-tabs button:hover {
@@ -1295,7 +1295,7 @@ body {
   border-radius: var(--radius-sm);
   font-size: 24px;
   line-height: 1;
-  transition: background-color 0.12s, transform 0.12s;
+  transition: background-color var(--dur-1) var(--ease), transform var(--dur-1) var(--ease);
 }
 
 .emoji-grid button:hover,
@@ -1329,7 +1329,7 @@ body {
 .sticker-panel button {
   border-radius: var(--radius-sm);
   overflow: hidden;
-  transition: transform 0.15s;
+  transition: transform var(--dur-1) var(--ease);
 }
 
 .sticker-panel button:hover {
@@ -1447,7 +1447,7 @@ body {
   color: var(--ink);
   font-size: 12px;
   font-weight: 500;
-  transition: background-color 0.2s, color 0.2s;
+  transition: background-color var(--dur-2) var(--ease), color var(--dur-2) var(--ease);
 }
 
 .info-actions button:hover {
@@ -1485,7 +1485,7 @@ body {
   width: 100%;
   aspect-ratio: 1;
   object-fit: cover;
-  transition: transform 0.3s var(--ease);
+  transition: transform var(--dur-3) var(--ease);
 }
 
 .media-grid button:hover img {
@@ -1743,7 +1743,7 @@ body {
   color: #fff;
   box-shadow: var(--shadow-lg);
   transform: scale(0.96);
-  transition: transform 0.3s var(--ease);
+  transition: transform var(--dur-3) var(--ease);
 }
 
 .call-modal.is-open .call {
@@ -1876,7 +1876,7 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.25);
   color: #fff;
   backdrop-filter: blur(10px);
-  transition: transform 0.15s, background-color 0.2s;
+  transition: transform var(--dur-1) var(--ease), background-color var(--dur-2) var(--ease);
 }
 
 .call-btn:hover {
@@ -1957,7 +1957,7 @@ body {
   color: var(--ink);
   text-align: center;
   cursor: pointer;
-  transition: border-color 0.2s, background-color 0.2s;
+  transition: border-color var(--dur-2) var(--ease), background-color var(--dur-2) var(--ease);
 }
 
 .member-picker input {
@@ -2056,7 +2056,7 @@ body {
   height: 48px;
   border-radius: var(--radius);
   background: var(--surface-2);
-  transition: background-color 0.2s, color 0.2s;
+  transition: background-color var(--dur-2) var(--ease), color var(--dur-2) var(--ease);
 }
 
 .wallet-actions button:hover > span {
@@ -2139,7 +2139,7 @@ body {
     z-index: 40;
     width: min(360px, calc(100% - 2 * var(--gap)));
     transform: translateX(calc(100% + 2 * var(--gap)));
-    transition: transform 0.35s var(--ease), visibility 0.35s;
+    transition: transform var(--dur-3) var(--ease), visibility 0.35s;
     box-shadow: var(--shadow-lg);
   }
 
@@ -2155,7 +2155,7 @@ body {
     background: rgba(15, 16, 18, 0.35);
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s, visibility 0.3s;
+    transition: opacity var(--dur-3) var(--ease), visibility 0.3s;
   }
 
   .app.has-info .scrim {
@@ -2262,7 +2262,7 @@ body {
     border-radius: 0;
     box-shadow: none;
     transform: translateX(100%);
-    transition: transform 0.35s var(--ease);
+    transition: transform var(--dur-3) var(--ease);
   }
 
   .app.chat-open .chat {
@@ -2472,7 +2472,7 @@ body {
   background: inherit;
   color: inherit;
   opacity: 0;
-  transition: opacity 0.15s;
+  transition: opacity var(--dur-1) var(--ease);
 }
 
 .msg:hover .msg-more,
@@ -2594,7 +2594,7 @@ body {
   border: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
   font-size: 14px;
-  transition: transform 0.15s;
+  transition: transform var(--dur-1) var(--ease);
 }
 
 .reaction:hover { transform: scale(1.08); }
@@ -2841,7 +2841,7 @@ body {
   height: 34px;
   border-radius: 50%;
   font-size: 20px;
-  transition: transform 0.15s, background-color 0.15s;
+  transition: transform var(--dur-1) var(--ease), background-color var(--dur-1) var(--ease);
 }
 
 .msg-menu-reactions button:hover {
@@ -3099,7 +3099,7 @@ select.input {
   background: var(--surface-2);
   overflow: hidden;
   cursor: pointer;
-  transition: border-color 0.2s;
+  transition: border-color var(--dur-2) var(--ease);
 }
 
 .story-drop:hover { border-color: var(--brand); }
@@ -3212,7 +3212,7 @@ select.input {
   opacity: 0;
   transform: translateY(calc(-100% - 20px));
   pointer-events: none;
-  transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.2), opacity 0.25s, background-color 0.3s, border-color 0.3s, color 0.3s;
+  transition: transform var(--dur-3) var(--ease-spring), opacity var(--dur-2) var(--ease), background-color var(--dur-3) var(--ease), border-color var(--dur-3) var(--ease), color var(--dur-3) var(--ease);
 }
 
 .conn-banner.is-visible { opacity: 1; transform: none; }
@@ -3268,7 +3268,7 @@ select.input {
 [data-theme="dark"] .conn-banner[data-state="online"] { background: color-mix(in srgb, #12261b 92%, transparent); color: #8ff0b4; }
 
 @media (prefers-reduced-motion: reduce) {
-  .conn-banner { transition: opacity 0.2s; transform: none; }
+  .conn-banner { transition: opacity var(--dur-2) var(--ease); transform: none; }
   .conn-ico::after { animation-duration: 2s; }
 }
 
@@ -3384,7 +3384,7 @@ select.input {
   border: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
   text-align: left;
-  transition: transform 0.2s var(--ease), box-shadow 0.2s, border-color 0.2s;
+  transition: transform var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease), border-color var(--dur-2) var(--ease);
 }
 
 .home-actions button:hover {
@@ -3482,7 +3482,7 @@ select.input {
   padding: 10px;
   border-radius: var(--radius);
   text-align: left;
-  transition: background-color 0.15s;
+  transition: background-color var(--dur-1) var(--ease);
 }
 
 .step:not(:disabled):hover { background: var(--surface-2); }
@@ -3535,7 +3535,7 @@ select.input {
   border-radius: var(--radius);
   background: var(--surface-2);
   text-align: center;
-  transition: transform 0.2s var(--ease);
+  transition: transform var(--dur-2) var(--ease);
 }
 
 .person:hover { transform: translateY(-2px); }
@@ -3759,7 +3759,7 @@ select.input {
   background: var(--surface-2);
   border: 2px solid transparent;
   cursor: pointer;
-  transition: border-color 0.15s, transform 0.15s var(--ease);
+  transition: border-color var(--dur-1) var(--ease), transform var(--dur-1) var(--ease);
 }
 
 .attach-thumb:hover,
@@ -3800,7 +3800,7 @@ select.input {
   background: var(--ink);
   color: var(--surface);
   opacity: 0;
-  transition: opacity 0.15s;
+  transition: opacity var(--dur-1) var(--ease);
 }
 
 .attach-thumb:hover .attach-remove,
@@ -3911,7 +3911,7 @@ select.input {
   text-align: left;
   border: 2px solid transparent;
   cursor: pointer;
-  transition: transform 0.2s var(--ease), box-shadow 0.2s, border-color 0.2s, opacity 0.2s;
+  transition: transform var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease), border-color var(--dur-2) var(--ease), opacity var(--dur-2) var(--ease);
 }
 
 .wallet-cards .wallet-card strong {
@@ -3973,7 +3973,7 @@ select.input {
   color: var(--text);
   font-size: 14px;
   font-weight: 600;
-  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  transition: background-color var(--dur-2) var(--ease), color var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease);
 }
 
 .currency-toggle b {
@@ -4225,7 +4225,7 @@ select.input {
   color: var(--ink);
   font-weight: 600;
   text-align: left;
-  transition: background-color 0.15s;
+  transition: background-color var(--dur-1) var(--ease);
 }
 
 .archived-row:hover { background: var(--surface-2); }
@@ -4289,7 +4289,7 @@ kbd,
   flex: none;
   cursor: pointer;
   opacity: 0.85;
-  transition: opacity 0.15s, color 0.15s;
+  transition: opacity var(--dur-1) var(--ease), color var(--dur-1) var(--ease);
 }
 
 .search-kbd:hover { opacity: 1; color: var(--brand-2); }
@@ -4364,7 +4364,7 @@ kbd,
   padding: 9px 8px;
   border-radius: var(--radius);
   cursor: pointer;
-  transition: background-color 0.15s;
+  transition: background-color var(--dur-1) var(--ease);
 }
 
 .pick-row:hover { background: var(--surface-2); }
@@ -4402,7 +4402,7 @@ kbd,
   border-radius: 50%;
   border: 2px solid var(--border);
   color: transparent;
-  transition: background-color 0.15s, border-color 0.15s, transform 0.15s var(--ease);
+  transition: background-color var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease), transform var(--dur-1) var(--ease);
 }
 
 .pick-row input:checked + .pick-check {
@@ -4476,7 +4476,7 @@ kbd,
   padding: 12px 48px 12px 10px;
   border-radius: var(--radius);
   text-align: left;
-  transition: background-color 0.15s;
+  transition: background-color var(--dur-1) var(--ease);
 }
 
 .starred-item:hover { background: var(--surface-2); }
@@ -4765,7 +4765,7 @@ kbd,
   border-radius: 50%;
   padding: 3px;
   border: 2px solid transparent;
-  transition: border-color 0.15s, transform 0.15s var(--ease);
+  transition: border-color var(--dur-1) var(--ease), transform var(--dur-1) var(--ease);
 }
 
 .swatches button:hover { transform: scale(1.08); }
@@ -4816,7 +4816,7 @@ kbd,
   border-radius: 12px;
   border: 2px solid var(--border);
   background-color: var(--bg);
-  transition: border-color 0.15s, transform 0.15s var(--ease);
+  transition: border-color var(--dur-1) var(--ease), transform var(--dur-1) var(--ease);
 }
 
 .wallpapers button:hover .wall-preview { transform: translateY(-2px); }
@@ -4857,7 +4857,7 @@ kbd,
   color: var(--text);
   font-size: 13px;
   font-weight: 500;
-  transition: background-color 0.15s, color 0.15s;
+  transition: background-color var(--dur-1) var(--ease), color var(--dur-1) var(--ease);
 }
 
 .segmented button.is-selected {
@@ -5021,7 +5021,7 @@ kbd,
   border-radius: 12px;
   border: 2px solid var(--border);
   background: var(--p-bg);
-  transition: border-color 0.15s, transform 0.15s var(--ease), box-shadow 0.15s;
+  transition: border-color var(--dur-1) var(--ease), transform var(--dur-1) var(--ease), box-shadow var(--dur-1) var(--ease);
 }
 
 .theme-card:hover .theme-preview { transform: translateY(-2px); }
@@ -5101,7 +5101,7 @@ kbd,
   opacity: 0;
   pointer-events: none;
   translate: 0 -50%;
-  transition: opacity 0.15s;
+  transition: opacity var(--dur-1) var(--ease);
 }
 
 .msg.me .msg-actions {
@@ -5128,7 +5128,7 @@ kbd,
   background: var(--surface);
   color: var(--muted);
   box-shadow: var(--shadow-sm);
-  transition: color 0.15s, transform 0.15s var(--ease);
+  transition: color var(--dur-1) var(--ease), transform var(--dur-1) var(--ease);
 }
 
 .msg-actions button:hover {
@@ -5162,7 +5162,7 @@ kbd,
   height: 38px;
   border-radius: 50%;
   font-size: 22px;
-  transition: transform 0.15s var(--ease), background-color 0.15s;
+  transition: transform var(--dur-1) var(--ease), background-color var(--dur-1) var(--ease);
 }
 
 .react-tray button:hover { transform: scale(1.25); background: var(--surface-2); }
@@ -5187,7 +5187,7 @@ kbd,
 }
 
 /* Deslizar para responder: la burbuja vuelve a su sitio al soltar */
-.bubble { transition: transform 0.25s var(--ease); }
+.bubble { transition: transform var(--dur-2) var(--ease); }
 
 /* ==========================================================================
    Selección de varios mensajes
@@ -5217,7 +5217,7 @@ kbd,
   padding-left: 40px;
   border-radius: 12px;
   cursor: pointer;
-  transition: background-color 0.15s;
+  transition: background-color var(--dur-1) var(--ease);
 }
 
 .chat.is-selecting .msg .bubble { max-width: min(72%, 560px); }
@@ -5233,7 +5233,7 @@ kbd,
   border: 2px solid var(--muted);
   background: var(--surface) center / 14px no-repeat;
   translate: 0 -50%;
-  transition: background-color 0.15s, border-color 0.15s;
+  transition: background-color var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease);
 }
 
 .chat.is-selecting .msg.is-selected {
@@ -5504,7 +5504,7 @@ kbd,
   padding: 12px;
   border-radius: var(--radius);
   text-align: left;
-  transition: background-color 0.15s;
+  transition: background-color var(--dur-1) var(--ease);
 }
 
 .radio-row:hover { background: var(--surface-2); }
@@ -5517,7 +5517,7 @@ kbd,
   height: 20px;
   border-radius: 50%;
   border: 2px solid var(--muted);
-  transition: border 0.15s;
+  transition: border var(--dur-1) var(--ease);
 }
 
 .radio-row.is-selected .radio-dot { border: 6px solid var(--brand-2); }
@@ -5604,7 +5604,7 @@ kbd,
     radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.35), transparent 40%),
     radial-gradient(circle at 85% 80%, color-mix(in srgb, #b86df0 60%, transparent), transparent 55%),
     linear-gradient(135deg, var(--cover-1, var(--brand)), var(--cover-2, var(--brand-2)));
-  transition: background 0.3s;
+  transition: background var(--dur-3) var(--ease);
 }
 
 .info-avatar {
@@ -5612,7 +5612,7 @@ kbd,
   padding: 4px;
   border-radius: 50%;
   background: var(--surface);
-  transition: transform 0.2s var(--ease);
+  transition: transform var(--dur-2) var(--ease);
 }
 
 .info-avatar:hover { transform: scale(1.03); }
@@ -5751,7 +5751,7 @@ kbd,
   font-weight: 600;
   letter-spacing: -0.01em;
   white-space: nowrap;
-  transition: background-color 0.15s, color 0.15s;
+  transition: background-color var(--dur-1) var(--ease), color var(--dur-1) var(--ease);
 }
 
 .media-tabs button.is-active {
@@ -5796,7 +5796,7 @@ kbd,
   border-radius: 12px;
   color: inherit;
   text-decoration: none;
-  transition: background-color 0.15s;
+  transition: background-color var(--dur-1) var(--ease);
 }
 
 .media-row:hover { background: var(--surface); }
@@ -5849,7 +5849,7 @@ kbd,
   color: var(--ink);
   font-weight: 500;
   text-align: left;
-  transition: background-color 0.15s;
+  transition: background-color var(--dur-1) var(--ease);
 }
 
 .info-rows button:hover:not(:disabled) { background: var(--surface); }
@@ -5892,7 +5892,7 @@ kbd,
   padding: 7px 6px;
   border-radius: 12px;
   text-align: left;
-  transition: background-color 0.15s;
+  transition: background-color var(--dur-1) var(--ease);
 }
 
 .common-list button:hover { background: var(--surface); }
@@ -5979,7 +5979,7 @@ kbd,
     radial-gradient(circle at 18% 25%, rgba(255, 255, 255, 0.4), transparent 42%),
     radial-gradient(circle at 85% 90%, rgba(0, 0, 0, 0.18), transparent 50%),
     linear-gradient(135deg, var(--cover-1, var(--brand)), var(--cover-2, var(--brand-2)));
-  transition: background 0.3s;
+  transition: background var(--dur-3) var(--ease);
 }
 
 .profile-close {
@@ -6043,7 +6043,7 @@ kbd,
   color: var(--surface);
   cursor: pointer;
   box-shadow: var(--shadow);
-  transition: transform 0.15s var(--ease);
+  transition: transform var(--dur-1) var(--ease);
 }
 
 .profile-photo-btn:hover { transform: scale(1.08); }
@@ -6170,7 +6170,7 @@ kbd,
   border: 2px solid transparent;
   background: var(--surface-2);
   text-align: left;
-  transition: border-color 0.15s, background-color 0.15s;
+  transition: border-color var(--dur-1) var(--ease), background-color var(--dur-1) var(--ease);
 }
 
 .status-option:hover { background: var(--surface-3); }
@@ -6205,7 +6205,7 @@ kbd,
   color: var(--ink);
   font-weight: 500;
   text-align: left;
-  transition: background-color 0.15s;
+  transition: background-color var(--dur-1) var(--ease);
 }
 
 .profile-link:hover { background: var(--surface-2); }
@@ -6291,7 +6291,7 @@ kbd,
   position: relative;
   flex: none;
   border-radius: 50%;
-  transition: transform 0.2s var(--ease);
+  transition: transform var(--dur-2) var(--ease);
 }
 
 .home-avatar-btn:hover { transform: scale(1.04); }
@@ -6388,7 +6388,7 @@ kbd,
   font-size: 13px;
   font-weight: 500;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: transform 0.15s var(--ease);
+  transition: transform var(--dur-1) var(--ease);
 }
 
 button.home-pill:hover { transform: translateY(-2px); }
@@ -6460,7 +6460,7 @@ button.home-pill:hover { transform: translateY(-2px); }
   height: 120px;
   border-radius: 50%;
   background: color-mix(in srgb, var(--brand) 10%, transparent);
-  transition: transform 0.3s var(--ease);
+  transition: transform var(--dur-3) var(--ease);
 }
 
 .home-actions button:hover::after { transform: scale(1.4); }
@@ -6470,7 +6470,7 @@ button.home-pill:hover { transform: translateY(-2px); }
   height: 46px;
   border-radius: 15px;
   box-shadow: 0 8px 18px -8px rgba(0, 0, 0, 0.35);
-  transition: transform 0.2s var(--ease);
+  transition: transform var(--dur-2) var(--ease);
 }
 
 .home-actions button:hover > span { transform: rotate(-6deg) scale(1.06); }
@@ -6506,7 +6506,7 @@ button.home-pill:hover { transform: translateY(-2px); }
   padding: 9px 8px;
   border-radius: 14px;
   text-align: left;
-  transition: background-color 0.15s;
+  transition: background-color var(--dur-1) var(--ease);
 }
 
 .recent-item:hover { background: var(--surface-2); }
@@ -6586,7 +6586,7 @@ button.home-pill:hover { transform: translateY(-2px); }
   height: 6px;
   border-radius: 50%;
   background: var(--surface-3);
-  transition: width 0.2s, background-color 0.2s;
+  transition: width var(--dur-2) var(--ease), background-color var(--dur-2) var(--ease);
 }
 
 .tip-dots i.is-active { width: 18px; border-radius: 3px; background: var(--brand-2); }
@@ -6605,7 +6605,7 @@ button.home-pill:hover { transform: translateY(-2px); }
   border: 1px solid var(--border);
   border-radius: 20px;
   background: var(--surface);
-  transition: transform 0.2s var(--ease), box-shadow 0.2s;
+  transition: transform var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease);
 }
 
 .person:hover {
@@ -6724,7 +6724,7 @@ button.home-pill:hover { transform: translateY(-2px); }
   margin: 8px 14px 0;
 }
 
-.pw-strength i { height: 4px; border-radius: 999px; background: var(--surface-3); transition: background-color 0.3s; }
+.pw-strength i { height: 4px; border-radius: 999px; background: var(--surface-3); transition: background-color var(--dur-3) var(--ease); }
 .pw-strength.is-short i:first-child { background: var(--danger); }
 .pw-strength[data-level="1"] i:first-child { background: var(--warning); }
 .pw-strength[data-level="2"] i:nth-child(-n + 2) { background: var(--brand); }
@@ -6852,11 +6852,11 @@ button.home-pill:hover { transform: translateY(-2px); }
   touch-action: none;
   user-select: none;
   cursor: grab;
-  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s;
+  transition: transform var(--dur-3) var(--ease), opacity var(--dur-3) var(--ease);
 }
 
 .dz-card.is-dragging { transition: none; cursor: grabbing; }
-.dz-card.is-leaving { transition: transform 0.32s ease-in, opacity 0.32s; opacity: 0; }
+.dz-card.is-leaving { transition: transform 0.32s ease-in, opacity var(--dur-3) var(--ease); opacity: 0; }
 .dz-card.is-next { transform: scale(0.94) translateY(14px); filter: brightness(0.96); pointer-events: none; }
 .dz-card:focus-visible { outline: 3px solid var(--brand); outline-offset: 4px; }
 
@@ -6962,7 +6962,7 @@ button.home-pill:hover { transform: translateY(-2px); }
   max-height: 0;
   overflow-y: auto;
   padding: 0 18px;
-  transition: max-height 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), padding 0.35s;
+  transition: max-height var(--dur-3) var(--ease), padding var(--dur-3) var(--ease);
 }
 
 .dz-card.is-expanded .dz-details { max-height: 48%; padding: 14px 18px 18px; }
@@ -7014,7 +7014,7 @@ button.home-pill:hover { transform: translateY(-2px); }
   border-radius: 50%;
   background: var(--surface);
   box-shadow: 0 10px 24px -12px rgba(16, 24, 40, 0.45), 0 0 0 1px var(--border);
-  transition: transform 0.2s cubic-bezier(0.2, 0.9, 0.3, 1.3), box-shadow 0.2s;
+  transition: transform var(--dur-2) var(--ease-spring), box-shadow var(--dur-2) var(--ease);
 }
 
 .dz-btn .icon { width: 28px; height: 28px; stroke-width: 2.6; }
@@ -7079,7 +7079,7 @@ button.home-pill:hover { transform: translateY(-2px); }
   border-radius: 20px;
   background: linear-gradient(135deg, color-mix(in srgb, #ff6b8b 16%, var(--surface)), var(--surface-2));
   text-align: left;
-  transition: transform 0.2s;
+  transition: transform var(--dur-2) var(--ease);
 }
 
 .dz-me:hover { transform: translateY(-1px); }
@@ -7168,7 +7168,7 @@ button.home-pill:hover { transform: translateY(-2px); }
   color: #fff;
   text-align: center;
   transform: scale(0.85);
-  transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.35);
+  transition: transform 0.4s var(--ease-spring);
 }
 
 .modal.is-open .dz-match { transform: none; }
@@ -7255,7 +7255,7 @@ button.home-pill:hover { transform: translateY(-2px); }
 /* --- Asistente del perfil de citas ---------------------------------------- */
 .dz-wizard { width: min(100%, 560px); }
 .dz-progress { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: -6px 0 18px; }
-.dz-progress i { height: 5px; border-radius: 999px; background: var(--surface-3); transition: background-color 0.3s; }
+.dz-progress i { height: 5px; border-radius: 999px; background: var(--surface-3); transition: background-color var(--dur-3) var(--ease); }
 .dz-progress i.is-on { background: linear-gradient(90deg, #ff8fa3, #ff3d6e); }
 .dz-step { display: none; }
 .dz-step.is-active { display: grid; gap: 12px; animation: fade-up 0.3s var(--ease); }
@@ -7279,7 +7279,7 @@ button.home-pill:hover { transform: translateY(-2px); }
   background: var(--surface-2) center / cover no-repeat;
   color: var(--muted);
   cursor: pointer;
-  transition: border-color 0.2s, transform 0.2s;
+  transition: border-color var(--dur-2) var(--ease), transform var(--dur-2) var(--ease);
 }
 
 .dz-photo-slot:hover { border-color: #ff6b8b; color: #ff3d6e; }
@@ -7323,7 +7323,7 @@ button.home-pill:hover { transform: translateY(-2px); }
   color: var(--text);
   font-size: 14px;
   font-weight: 500;
-  transition: background-color 0.15s, color 0.15s, border-color 0.15s, transform 0.15s;
+  transition: background-color var(--dur-1) var(--ease), color var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease), transform var(--dur-1) var(--ease);
 }
 
 .dz-choice button:hover,
@@ -7436,7 +7436,7 @@ button.home-pill:hover { transform: translateY(-2px); }
   color: var(--ink);
   font-size: 13.5px;
   text-align: left;
-  transition: background-color 0.15s, transform 0.15s;
+  transition: background-color var(--dur-1) var(--ease), transform var(--dur-1) var(--ease);
 }
 
 .dz-ice-ideas button:hover { background: color-mix(in srgb, #ff6b8b 12%, var(--surface-2)); transform: translateX(3px); }
@@ -7475,7 +7475,7 @@ button.home-pill:hover { transform: translateY(-2px); }
   color: inherit;
   font-size: 14px;
   font-weight: 600;
-  transition: transform 0.15s, background-color 0.15s;
+  transition: transform var(--dur-1) var(--ease), background-color var(--dur-1) var(--ease);
 }
 
 .msg.me .game-options button { background: rgba(255, 255, 255, 0.18); }
@@ -7583,7 +7583,7 @@ button.home-pill:hover { transform: translateY(-2px); }
   height: 46px;
   border-radius: 14px;
   color: var(--muted);
-  transition: background-color 0.15s, transform 0.15s;
+  transition: background-color var(--dur-1) var(--ease), transform var(--dur-1) var(--ease);
 }
 
 .sticker-panel .sticker-tabs button:hover { background: var(--surface-2); transform: none; }
@@ -7636,7 +7636,7 @@ button.home-pill:hover { transform: translateY(-2px); }
 .sticker-grid button {
   padding: 4px;
   border-radius: var(--radius-sm);
-  transition: transform 0.18s cubic-bezier(0.2, 0.9, 0.3, 1.4), background-color 0.15s;
+  transition: transform var(--dur-2) var(--ease-spring), background-color var(--dur-1) var(--ease);
 }
 
 .sticker-grid button:hover { background: var(--surface-2); transform: scale(1.08) rotate(-2deg); }
@@ -7668,7 +7668,7 @@ button.home-pill:hover { transform: translateY(-2px); }
 .info-head {
   position: relative;
   z-index: 2;
-  transition: box-shadow 0.2s;
+  transition: box-shadow var(--dur-2) var(--ease);
 }
 
 .info.is-scrolled .info-head { box-shadow: 0 8px 16px -14px rgba(16, 24, 40, 0.5); }
@@ -7685,7 +7685,7 @@ button.home-pill:hover { transform: translateY(-2px); }
   transform: scaleX(var(--info-progress));
   transform-origin: left;
   opacity: 0;
-  transition: opacity 0.2s;
+  transition: opacity var(--dur-2) var(--ease);
 }
 
 .info.is-scrollable.is-scrolled .info-head::after { opacity: 1; }
@@ -7762,7 +7762,7 @@ button.home-pill:hover { transform: translateY(-2px); }
 }
 
 .dz-progress li { display: grid; gap: 6px; min-width: 0; }
-.dz-progress li i { height: 5px; border-radius: 999px; background: var(--surface-3); transition: background-color 0.3s; }
+.dz-progress li i { height: 5px; border-radius: 999px; background: var(--surface-3); transition: background-color var(--dur-3) var(--ease); }
 
 .dz-progress li span {
   overflow: hidden;
@@ -7771,7 +7771,7 @@ button.home-pill:hover { transform: translateY(-2px); }
   font-weight: 600;
   text-overflow: ellipsis;
   white-space: nowrap;
-  transition: color 0.2s;
+  transition: color var(--dur-2) var(--ease);
 }
 
 .dz-progress li.is-current i { background: linear-gradient(90deg, #ff8fa3, #ff3d6e); }
@@ -7794,14 +7794,14 @@ button.home-pill:hover { transform: translateY(-2px); }
   font-size: 12px;
   font-weight: 700;
   vertical-align: 2px;
-  transition: background-color 0.2s, color 0.2s;
+  transition: background-color var(--dur-2) var(--ease), color var(--dur-2) var(--ease);
 }
 
 .dz-count.is-ok { background: color-mix(in srgb, var(--online) 16%, transparent); color: color-mix(in srgb, var(--online) 75%, var(--ink)); }
 .dz-count.is-full { background: color-mix(in srgb, #ff3d6e 14%, transparent); color: #e0457b; }
 
 #dzInterestHint,
-#dzBirthNote { display: flex; align-items: center; gap: 5px; transition: color 0.2s; }
+#dzBirthNote { display: flex; align-items: center; gap: 5px; transition: color var(--dur-2) var(--ease); }
 #dzInterestHint.is-ok,
 #dzBirthNote.is-ok { color: color-mix(in srgb, var(--online) 75%, var(--ink)); }
 #dzBirthNote.is-error { color: var(--danger); }
@@ -7858,7 +7858,7 @@ button.home-pill:hover { transform: translateY(-2px); }
   background: linear-gradient(135deg, #ff8fa3, #ff3d6e);
   color: #fff;
   box-shadow: 0 12px 24px -12px rgba(255, 61, 110, 0.9);
-  transition: transform 0.2s cubic-bezier(0.2, 0.9, 0.3, 1.4), background-color 0.2s;
+  transition: transform var(--dur-2) var(--ease-spring), background-color var(--dur-2) var(--ease);
 }
 
 .dz-photo-slot.is-main:hover .dz-slot-ico { transform: scale(1.08) rotate(-6deg); }
@@ -7893,7 +7893,7 @@ button.home-pill:hover { transform: translateY(-2px); }
   box-shadow: 0 6px 14px -6px rgba(255, 61, 110, 0.8);
 }
 
-.dz-photo-slot.has-photo { cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
+.dz-photo-slot.has-photo { cursor: pointer; transition: transform var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease); }
 .dz-photo-slot.has-photo:not(.is-main):hover { transform: translateY(-2px); box-shadow: 0 0 0 2px #ff8fa3; }
 
 .dz-photo-slot.is-loading {
@@ -8026,7 +8026,7 @@ button.home-pill:hover { transform: translateY(-2px); }
 /* Pie del asistente y preguntas */
 .dz-wiz-foot .btn-primary { gap: 6px; }
 .dz-wiz-foot .btn-primary.is-loading { opacity: 0.75; pointer-events: none; }
-.dz-prompt-edit { transition: background-color 0.2s, box-shadow 0.2s; }
+.dz-prompt-edit { transition: background-color var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease); }
 .dz-prompt-edit.is-filled { box-shadow: inset 0 0 0 1px color-mix(in srgb, #ff6b8b 35%, transparent); }
 
 @media (max-width: 860px) {
@@ -8055,7 +8055,7 @@ button.home-pill:hover { transform: translateY(-2px); }
 
 .dz-tips li .icon { color: #ff3d6e; }
 .dz-choice button .icon,
-.dz-interests button .icon { width: 16px; height: 16px; color: #ff5a79; transition: color 0.15s; }
+.dz-interests button .icon { width: 16px; height: 16px; color: #ff5a79; transition: color var(--dur-1) var(--ease); }
 .dz-choice button.is-selected .icon,
 .dz-interests button.is-selected .icon { color: #fff; }
 .dz-tags span .icon { width: 14px; height: 14px; opacity: 0.8; }
@@ -8265,7 +8265,7 @@ button.home-pill:hover { transform: translateY(-2px); }
     font-weight: 600;
     letter-spacing: 0.01em;
     -webkit-tap-highlight-color: transparent;
-    transition: color 0.2s, transform 0.15s;
+    transition: color var(--dur-2) var(--ease), transform var(--dur-1) var(--ease);
   }
 
   .rail-btn:active { transform: scale(0.92); }
@@ -8276,7 +8276,7 @@ button.home-pill:hover { transform: translateY(-2px); }
     height: 22px;
     padding: 4px 12px;
     border-radius: 999px;
-    transition: background-color 0.25s, color 0.25s, padding 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.3);
+    transition: background-color var(--dur-2) var(--ease), color var(--dur-2) var(--ease), padding var(--dur-3) var(--ease-spring);
   }
 
   .rail-btn:hover > .icon { background: transparent; }
@@ -8393,7 +8393,7 @@ button.home-pill:hover { transform: translateY(-2px); }
   color: #fff;
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
-  transition: background-color 0.2s, transform 0.15s;
+  transition: background-color var(--dur-2) var(--ease), transform var(--dur-1) var(--ease);
 }
 
 .vr-icon:hover { background: rgba(0, 0, 0, 0.55); }
@@ -8455,7 +8455,7 @@ button.home-pill:hover { transform: translateY(-2px); }
   height: 62px;
   border-radius: 50%;
   background: #ef4444;
-  transition: width 0.25s, height 0.25s, border-radius 0.25s, transform 0.15s;
+  transition: width var(--dur-2) var(--ease), height var(--dur-2) var(--ease), border-radius var(--dur-2) var(--ease), transform var(--dur-1) var(--ease);
 }
 
 .vr-shutter:active .vr-dot { transform: scale(0.9); }
@@ -8501,7 +8501,7 @@ button.home-pill:hover { transform: translateY(-2px); }
   background: rgba(0, 0, 0, 0.45);
   color: #fff;
   transform: translate(-50%, -50%);
-  transition: opacity 0.2s, transform 0.2s;
+  transition: opacity var(--dur-2) var(--ease), transform var(--dur-2) var(--ease);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
 }
@@ -8558,7 +8558,7 @@ button.home-pill:hover { transform: translateY(-2px); }
   background: var(--brand-2);
   color: #fff;
   box-shadow: 0 10px 22px -10px var(--brand-2);
-  transition: transform 0.15s, opacity 0.2s;
+  transition: transform var(--dur-1) var(--ease), opacity var(--dur-2) var(--ease);
 }
 
 .vr-send:active { transform: scale(0.92); }
@@ -8604,7 +8604,7 @@ button.home-pill:hover { transform: translateY(-2px); }
   background: rgba(0, 0, 0, 0.45);
   color: #fff;
   transform: translate(-50%, -50%);
-  transition: transform 0.2s, background-color 0.2s;
+  transition: transform var(--dur-2) var(--ease), background-color var(--dur-2) var(--ease);
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
 }

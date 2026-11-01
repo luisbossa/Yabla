@@ -46,6 +46,9 @@ module.exports = {
     key: process.env.PUSHER_KEY,
     secret: process.env.PUSHER_SECRET,
     cluster: process.env.PUSHER_CLUSTER || "us2",
+    // Fuera de producción los canales llevan "dev-": así se puede usar la misma app de Pusher
+    // en local sin que los eventos lleguen a los usuarios de producción (que tienen los mismos ids)
+    prefix: isProduction ? "" : "dev-",
   },
   // Vercel Blob para los archivos subidos. Dos formas de conectarlo: token fijo (BLOB_READ_WRITE_TOKEN)
   // o la conexión nueva de Vercel (BLOB_STORE_ID + credencial OIDC que Vercel da a cada función).

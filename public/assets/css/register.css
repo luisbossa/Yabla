@@ -325,7 +325,7 @@
   color: var(--muted);
   font-size: 13px;
   text-decoration: none;
-  transition: background-color 0.2s;
+  transition: background-color var(--dur-2) var(--ease);
 }
 
 .auth-switch strong { color: var(--brand-2); }
@@ -369,7 +369,7 @@
   color: var(--muted);
   translate: 0 -50%;
   pointer-events: none;
-  transition: color 0.2s;
+  transition: color var(--dur-2) var(--ease);
 }
 
 .input-icon .input { padding-left: 44px; }
@@ -426,7 +426,7 @@
   font-size: 13px;
   font-weight: 600;
   animation: fade-up 0.25s var(--ease);
-  transition: transform 0.15s var(--ease);
+  transition: transform var(--dur-1) var(--ease);
 }
 
 .chip:hover { transform: translateY(-1px); }
@@ -443,7 +443,7 @@
   height: 4px;
   border-radius: var(--pill);
   background: var(--surface-3);
-  transition: background-color 0.3s;
+  transition: background-color var(--dur-3) var(--ease);
 }
 
 .strength.is-short i:first-child { background: var(--danger); }

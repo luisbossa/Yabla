@@ -18,6 +18,16 @@ const Yabla = (() => {
     }
   }
 
+  /**
+   * Cambios de aspecto (tema, color, tamaño del texto) con un fundido de toda la pantalla
+   * (View Transitions). Sin soporte o con "reducir movimiento", el cambio es instantáneo.
+   */
+  function smoothly(change) {
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (!document.startViewTransition || reduce || document.visibilityState !== "visible") return change();
+    document.startViewTransition(change);
+  }
+
   // --- Tema ---
   // Cada tema es claro u oscuro (data-theme) y tiene su paleta (data-palette).
   // "auto" sigue la preferencia del sistema operativo.
@@ -43,7 +53,7 @@ const Yabla = (() => {
 
   function setTheme(choice) {
     write(THEME_KEY, choice === "auto" || THEMES[choice] ? choice : "light");
-    applyTheme();
+    smoothly(applyTheme);
     document.dispatchEvent(new CustomEvent("themechange", { detail: getTheme() }));
   }
 
@@ -65,7 +75,7 @@ const Yabla = (() => {
   }
 
   function setAppearance(key, value) {
-    document.documentElement.dataset[key] = value;
+    smoothly(() => (document.documentElement.dataset[key] = value));
     write(`yabla:${key}`, value);
   }
 

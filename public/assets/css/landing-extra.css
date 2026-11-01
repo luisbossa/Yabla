@@ -4,6 +4,17 @@
    oscura, píldoras, tarjetas de 24 px y el resplandor azul del héroe.
    ========================================================================== */
 
+/* Movimiento: los mismos tokens que base.css (la landing no carga base.css) */
+:root {
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.3, 1.35, 0.5, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-1: 140ms;
+  --dur-2: 220ms;
+  --dur-3: 320ms;
+  --dur-4: 480ms;
+}
+
 /* Las versiones originales de Framer se ocultan (las sustituyen estas) */
 #main [data-framer-name="Faq"],
 #main .framer-1qrjgau-container,
@@ -53,7 +64,7 @@
 .yl-reveal {
   opacity: 0;
   transform: translateY(28px);
-  transition: opacity 0.7s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
   transition-delay: var(--delay, 0s);
 }
 
@@ -75,12 +86,12 @@
   font-size: 15px;
   font-weight: 600;
   text-decoration: none;
-  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.2s, background-color 0.2s;
+  transition: transform var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease), background-color var(--dur-2) var(--ease);
 }
 
 .yl-btn:hover { transform: translateY(-2px); }
 .yl-btn:active { transform: scale(0.97); }
-.yl-btn svg { transition: transform 0.2s; }
+.yl-btn svg { transition: transform var(--dur-2) var(--ease); }
 .yl-btn:hover svg { transform: translate(2px, -2px); }
 
 .yl-btn.is-dark { background: var(--ink); color: #fff; box-shadow: 0 10px 24px -10px rgba(38, 36, 36, 0.6); }
@@ -245,7 +256,7 @@
   color: var(--text);
   font: 500 14px Inter, system-ui, sans-serif;
   cursor: pointer;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+  transition: background-color var(--dur-2) var(--ease), color var(--dur-2) var(--ease), border-color var(--dur-2) var(--ease);
 }
 
 .yl-filters button:hover { border-color: var(--ink); color: var(--ink); }
@@ -265,7 +276,7 @@
 .yl-item {
   border-radius: 24px;
   background: var(--card);
-  transition: background-color 0.25s, box-shadow 0.25s;
+  transition: background-color var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease);
 }
 
 .yl-item[hidden] { display: none; }
@@ -299,7 +310,7 @@
   color: var(--muted);
   font-size: 13px;
   font-variant-numeric: tabular-nums;
-  transition: color 0.25s;
+  transition: color var(--dur-2) var(--ease);
 }
 
 .yl-item.is-open .yl-num { color: var(--blue); }
@@ -313,7 +324,7 @@
   height: 36px;
   border-radius: 50%;
   background: var(--ink);
-  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.25s;
+  transition: transform var(--dur-3) var(--ease), background-color var(--dur-2) var(--ease);
 }
 
 .yl-toggle::before,
@@ -336,7 +347,7 @@
 .yl-a {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: grid-template-rows 0.4s var(--ease);
 }
 
 .yl-a > div { min-height: 0; overflow: hidden; }
@@ -348,7 +359,7 @@
   line-height: 1.6;
   opacity: 0;
   filter: blur(4px);
-  transition: opacity 0.35s, filter 0.35s;
+  transition: opacity var(--dur-3) var(--ease), filter var(--dur-3) var(--ease);
 }
 
 .yl-a strong { color: var(--ink); }
@@ -494,7 +505,7 @@
   font-size: 14.5px;
   font-weight: 500;
   text-decoration: none;
-  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+  transition: transform var(--dur-2) var(--ease), border-color var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease), background-color var(--dur-2) var(--ease);
 }
 
 .yl-foot-nav a:hover {
@@ -505,7 +516,7 @@
 
 .yl-foot-nav a.is-main { border-color: var(--ink); background: var(--ink); color: #fff; }
 .yl-foot-nav a.is-main:hover { background: #000; }
-.yl-foot-nav a svg { width: 14px; height: 14px; transition: transform 0.2s; }
+.yl-foot-nav a svg { width: 14px; height: 14px; transition: transform var(--dur-2) var(--ease); }
 .yl-foot-nav a:hover svg { transform: translate(2px, -2px); }
 
 /* Marca gigante: degradado que se funde con el fondo */
@@ -549,7 +560,7 @@
   color: var(--ink);
   cursor: pointer;
   margin-left: auto;
-  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.2s, background-color 0.2s, color 0.2s;
+  transition: transform var(--dur-2) var(--ease), border-color var(--dur-2) var(--ease), background-color var(--dur-2) var(--ease), color var(--dur-2) var(--ease);
 }
 
 .yl-top svg { transform: rotate(180deg); width: 16px; height: 16px; }
@@ -687,7 +698,7 @@
 }
 
 #main input.framer-form-input {
-  transition: box-shadow 0.2s, background-color 0.2s !important;
+  transition: box-shadow var(--dur-2) var(--ease), background-color var(--dur-2) var(--ease) !important;
 }
 
 #main input.framer-form-input:focus {
@@ -697,7 +708,7 @@
 
 /* --- Botón Entrar ------------------------------------------------------------ */
 #main button.framer-bJR9r {
-  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.2s !important;
+  transition: transform var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease) !important;
 }
 
 #main button.framer-bJR9r:hover {
@@ -714,7 +725,7 @@
 
 #main [data-framer-name="profiles"] img {
   box-shadow: 0 0 0 3px #f7f7f7;
-  transition: transform 0.2s;
+  transition: transform var(--dur-2) var(--ease);
 }
 
 #main [data-framer-name="profiles"] [data-framer-name="image"]:hover img { transform: translateY(-3px); }
@@ -768,7 +779,7 @@
   opacity: 0;
   translate: 0 24px;
   scale: 0.92;
-  transition: opacity 0.7s cubic-bezier(0.2, 0.9, 0.3, 1.2), translate 0.7s cubic-bezier(0.2, 0.9, 0.3, 1.2), scale 0.7s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+  transition: opacity 0.7s var(--ease-spring), translate 0.7s var(--ease-spring), scale 0.7s var(--ease-spring);
 }
 
 .yl-callout strong { display: block; font-size: 14px; font-weight: 600; }
@@ -828,7 +839,7 @@
   background: #fff;
   box-shadow: 0 0 0 4px rgba(91, 141, 239, 0.25), 0 0 18px 4px rgba(91, 141, 239, 0.45);
   opacity: 0;
-  transition: opacity 0.6s;
+  transition: opacity 0.6s var(--ease);
 }
 
 .yl-visual-deco.is-visible .yl-spark { opacity: 1; animation: yl-twinkle 3.6s ease-in-out infinite; }
@@ -903,7 +914,7 @@
   border-radius: 28px;
   background: #fff;
   border: 1px solid var(--line);
-  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s, opacity 0.7s, translate 0.7s;
+  transition: transform var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease), opacity 0.7s var(--ease), translate 0.7s var(--ease);
 }
 
 /* Brillo de color que crece al pasar el ratón */
@@ -916,7 +927,7 @@
   height: 160px;
   border-radius: 50%;
   background: var(--glow, rgba(91, 141, 239, 0.12));
-  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform var(--dur-3) var(--ease);
 }
 
 .yl-feat:hover {
@@ -935,7 +946,7 @@
   border-radius: 16px;
   color: #fff;
   box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.4);
-  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform var(--dur-2) var(--ease);
 }
 
 .yl-feat:hover .yl-feat-ico { transform: rotate(-6deg) scale(1.06); }
@@ -1199,7 +1210,7 @@
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  transition: border-color 0.2s, background-color 0.2s;
+  transition: border-color var(--dur-2) var(--ease), background-color var(--dur-2) var(--ease);
 }
 
 .yl-feat-chips li svg { width: 15px; height: 15px; color: #ff3d6e; }
@@ -1234,7 +1245,7 @@ html { scroll-behavior: smooth; }
   color: #8b8d90;
   cursor: pointer;
   transform: translateY(-50%);
-  transition: background-color 0.2s, color 0.2s, transform 0.15s;
+  transition: background-color var(--dur-2) var(--ease), color var(--dur-2) var(--ease), transform var(--dur-1) var(--ease);
 }
 
 .yl-eye svg {

@@ -25,7 +25,9 @@ function post(url, body, { keepalive = false } = {}) {
 }
 
 // --- Canal del usuario: todos los eventos del servidor ----------------------------------
-const userChannel = pusher?.subscribe(`private-user-${config.userId}`);
+// prefix: "dev-" en local, para no mezclarse con producción si se usa la misma app de Pusher
+const prefix = config.pusher?.prefix || "";
+const userChannel = pusher?.subscribe(`private-${prefix}user-${config.userId}`);
 
 userChannel?.bind_global((event, data) => {
   if (event.startsWith("pusher:")) return;
@@ -66,7 +68,7 @@ const call = { id: null, channel: null, ready: null, outbox: [], pumping: false,
 function joinCall(callId) {
   leaveCall();
   call.id = callId;
-  call.channel = pusher.subscribe(`presence-call-${callId}`);
+  call.channel = pusher.subscribe(`presence-${prefix}call-${callId}`);
   call.ready = new Promise((resolve, reject) => {
     call.channel.bind("pusher:subscription_succeeded", resolve);
     call.channel.bind("pusher:subscription_error", reject);
@@ -77,7 +79,7 @@ function joinCall(callId) {
 
 function leaveCall() {
   if (!call.id) return;
-  pusher.unsubscribe(`presence-call-${call.id}`);
+  pusher.unsubscribe(`presence-${prefix}call-${call.id}`);
   clearTimeout(call.flushTimer);
   Object.assign(call, { id: null, channel: null, ready: null, outbox: [], pumping: false, candidates: [], flushTimer: null, parts: new Map() });
 }

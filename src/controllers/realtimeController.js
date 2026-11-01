@@ -10,8 +10,10 @@ const calls = require("../services/calls");
 const validate = require("../utils/validate");
 const { httpError } = require("../middleware/errorHandler");
 
-const USER_CHANNEL = /^private-user-(\d+)$/;
-const CALL_CHANNEL = /^presence-call-([\w-]+)$/;
+// Mismo prefijo que realtime.channel / realtime.callChannel ("dev-" fuera de producción)
+const { prefix } = config.pusher;
+const USER_CHANNEL = new RegExp(`^private-${prefix}user-(\\d+)$`);
+const CALL_CHANNEL = new RegExp(`^presence-${prefix}call-([\\w-]+)$`);
 
 /** pusher-js pide permiso para cada canal privado al que se suscribe. */
 exports.auth = async (req, res) => {
@@ -100,4 +102,4 @@ exports.visibility = async (req, res) => {
 };
 
 /** Configuración del cliente de Pusher (va en la página del chat). */
-exports.clientConfig = () => (realtime.enabled ? { key: config.pusher.key, cluster: config.pusher.cluster } : null);
+exports.clientConfig = () => (realtime.enabled ? { key: config.pusher.key, cluster: config.pusher.cluster, prefix } : null);
